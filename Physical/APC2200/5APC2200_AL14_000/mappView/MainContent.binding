@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BindingsSet id="MainContent" xmlns="http://www.br-automation.com/iat2015/binding/engineering/v2" xmlns:bt="http://www.br-automation.com/iat2015/bindingListTypes/engineering/v2" xmlns:be="http://www.br-automation.com/iat2015/bindingListEmbedded/engineering/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Bindings>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:Start" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="PushButton_Start" attribute="value" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:Stop" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="PushButton_Stop" attribute="value" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:NrOfShuttles" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="NumericInput_NrOfShuttles" attribute="value" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:Velocity" attribute="node" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="NumericInput_Velocity" attribute="node" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:Acceleration" attribute="node" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="NumericInput_Acceleration" attribute="node" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:Deceleration" attribute="node" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="NumericInput_Deceleration" attribute="node" />
+</Binding>
+
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:ShuttleInitData.ID" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="TableItem_ID" attribute="stringValue" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:ShuttleInitData.Position" attribute="node" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="TableItem_Position" attribute="node" />
+</Binding>
+
+
+
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:Messages" attribute="value" samplingRate="fast" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="TableItem_Messages" attribute="stringValue" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:ImageIndex" attribute="value" samplingRate="fast" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="TableItemImageList_Arrows" attribute="selectedIndex" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:ConveyorVelocity" attribute="node" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="BasicSlider_ConVel" attribute="node" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:Timestamps" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="TableItemDateTime1" attribute="value" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:AddShuttle" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="PushButton_AddShuttle" attribute="value" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:UserID" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="TextInput_ID" attribute="value" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:AddPosition" attribute="node" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="NumericInput_Position" attribute="node" />
+</Binding>
+
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:EnableStations" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="ImageList_Running" attribute="selectedIndex" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:Halt" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="PushButton_Halt" attribute="value" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:AutomaticVelocityAdjustment" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="CheckBox_AutomaticVelocity" attribute="value" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:AutomaticVelocityAdjNotActive" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="BasicSlider_ConVel" attribute="enable" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:BarrierClosed_AddShuttle" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="PushButton_AddShuttle_Confirm" attribute="enable" />
+</Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:ConfirmShuttleAdded" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="PushButton_AddShuttle_Confirm" attribute="value" />
+</Binding>
+</Bindings>
+</BindingsSet>

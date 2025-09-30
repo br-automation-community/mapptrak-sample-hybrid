@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Configuration>
+  <Element ID="ShuttleStereotype_1" Type="shuttlestereotype">
+    <Selector ID="MovementLimits">
+      <Selector ID="Acceleration">
+        <Property ID="Acceleration" Value="30" />
+      </Selector>
+      <Selector ID="Deceleration">
+        <Property ID="Deceleration" Value="30" />
+      </Selector>
+    </Selector>
+    <Selector ID="JerkFilter" Value="NotUsed" />
+    <Group ID="UserData">
+      <Property ID="Size" Value="10" />
+    </Group>
+  </Element>
+</Configuration>

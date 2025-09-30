@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio WorkingVersion="6.1" FileVersion="4.9"?>
+<Hardware xmlns="http://br-automation.co.at/AS/Hardware">
+  <Module Name="5ACCIF01.FPLK-000" Type="5ACCIF01.FPLK-000" Version="1.9.0.0">
+    <Connection Connector="PLK2" TargetModule="8D1A33.AB0000000-1" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="SL" TargetModule="5APC2200_AL14_000" TargetConnector="SL1" />
+    <Connector Name="IF1">
+      <Parameter ID="CycleTime" Value="800" />
+      <Parameter ID="EplNatSubnet" Value="192.168.102.0" />
+      <Group ID="Channel1" />
+      <Parameter ID="ChannelID1" Value="McAcpBroadcast" />
+      <Parameter ID="ChannelType1" Value="OCTET[120]" />
+    </Connector>
+  </Module>
+  <Module Name="5APC2200_AL14_000" Type="5APC2200.AL14-000" Version="2.0.7.0">
+    <Connector Name="IF3">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+      <Parameter ID="ActivateDevice" Value="1" />
+      <Parameter ID="HostName" Value="llm-demosystem-ds3" />
+      <Parameter ID="Mode" Value="Manual" />
+      <Parameter ID="InternetAddress" Value="10.43.39.206" />
+      <Parameter ID="SubnetMask" Value="255.255.255.0" />
+      <Parameter ID="InaNodeNumber" Value="206" />
+      <Parameter ID="ActivateSnmp" Value="2" />
+    </Connector>
+    <Connector Name="IF4">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+      <Parameter ID="ActivateDevice" Value="1" />
+      <Parameter ID="HostName" Value="llm-demosystem-ds3" />
+      <Parameter ID="ActivateSnmp" Value="2" />
+    </Connector>
+    <Connector Name="IF5">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+    </Connector>
+    <Connector Name="IF6">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+    </Connector>
+    <Parameter ID="ConfigurationID" Value="Hybrid_APC910" />
+    <Parameter ID="Simulation" Value="1" />
+    <Parameter ID="MotionLoggerSize" Value="2048000" />
+    <Parameter ID="TimerDeviceType" Value="EPLX2X" />
+    <Parameter ID="TimerDevice" Value="5ACCIF01.FPLK-000.IF1" />
+    <Parameter ID="TaskClassIdleTime" Value="1600" />
+    <Parameter ID="Cyclic1Duration" Value="800" />
+    <Parameter ID="Cyclic1Tolerance" Value="0" />
+    <Parameter ID="Cyclic3Duration" Value="49600" />
+    <Parameter ID="Cyclic3Tolerance" Value="49600" />
+    <Parameter ID="Cyclic8Duration" Value="9600" />
+    <Group ID="FileDevice1" />
+    <Parameter ID="FileDeviceName1" Value="SvgData" />
+    <Parameter ID="FileDevicePath1" Value="USER_PATH" />
+    <Parameter ID="EthernetHostName" Value="llm-demosystem-ds3" />
+    <Parameter ID="EthernetDefaultGateway" Value="10.43.39.1" />
+    <Parameter ID="ActivateFtpServer" Value="1" />
+    <Parameter ID="FTPProtocol" Value="1" />
+    <Group ID="FtpUser1" />
+    <Parameter ID="FtpUsername1" Value="Admin" />
+    <Parameter ID="FtpUserPassword1" Value="Pdt4iUtP2akYp0fWOPx8iCFOek96otsGjJ7w2jsAU3U=" />
+    <Parameter ID="FtpUserSalt1" Value="ubly4TPI" />
+    <Parameter ID="FTPAccessRight1" Value="0" />
+    <Parameter ID="ActivateWebServer" Value="1" />
+    <Parameter ID="WebServerProtocol" Value="3" />
+    <Parameter ID="ActivateSdm" Value="1" />
+  </Module>
+  <Module Name="80PS080X3.10-01" Type="80PS080X3.10-01" Version="1.7.0.0">
+    <Connection Connector="X2X1" TargetModule="X20BT9400" TargetConnector="X2X1">
+      <Cable Type="X2XCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="Supervision" Value="off" />
+    <Parameter ID="ParallelMode01" Value="on" />
+    <Parameter ID="VoltageSet01" Value="58" />
+    <Parameter ID="RampMode01" Value="steep" />
+    <Parameter ID="ChopperEnable01" Value="on" />
+  </Module>
+  <Module Name="80PS080X3.10-01_a" Type="80PS080X3.10-01" Version="1.7.0.0">
+    <Connection Connector="X2X1" TargetModule="80PS080X3.10-01" TargetConnector="X2X2">
+      <Cable Type="X2XCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="Supervision" Value="off" />
+    <Parameter ID="ParallelMode01" Value="on" />
+    <Parameter ID="VoltageSet01" Value="58" />
+    <Parameter ID="RampMode01" Value="steep" />
+    <Parameter ID="ChopperEnable01" Value="on" />
+  </Module>
+  <Module Name="8D1A33.AB0000000-1" Type="8D1A33.AB0000000-1" Version="1.0.1.0" NodeNumber="130">
+    <Connection Connector="PLK1" TargetModule="5ACCIF01.FPLK-000" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="AxisReference" Location="DriveConfiguration/Channel[1]/RealAxis" Value="gAxis_1" />
+    <Parameter ID="ReferenceDistance" Location="DriveConfiguration/Channel[1]/RealAxis/MechanicalElements/RotaryToLinearTransformation" Value="0.13" />
+  </Module>
+  <Module Name="8F1I01.AA66.Seg_0" Type="8F1I01.AA66.xxxx-1" Version="1.0.0.4" NodeNumber="7">
+    <Connection Connector="PLK1" TargetModule="8F1I01.BA2B.xxxx-1_a" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.AB2B.xxxx-1" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK3" TargetModule="X20BC8083" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_01" />
+  </Module>
+  <Module Name="8F1I01.AB2B.xxxx-1" Type="8F1I01.AB2B.xxxx-1" Version="1.0.0.4" NodeNumber="8">
+    <Connection Connector="PLK1" TargetModule="8F1I01.AA66.Seg_0" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.BB4B.xxxx-1" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_02" />
+  </Module>
+  <Module Name="8F1I01.AB2B.xxxx-1_a" Type="8F1I01.AB2B.xxxx-1" Version="1.0.0.4" NodeNumber="2">
+    <Connection Connector="PLK2" TargetModule="8F1I01.BB4B.xxxx-1_e" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_08" />
+    <Parameter ID="SegmentSectorReference" Location="DriveConfiguration/Segment" Value="SegSec_08" />
+  </Module>
+  <Module Name="8F1I01.BA2B.xxxx-1" Type="8F1I01.BA2B.xxxx-1" Version="1.0.0.4" NodeNumber="12">
+    <Connection Connector="PLK1" TargetModule="8F1I01.BB4B.xxxx-1_b" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_06" />
+    <Parameter ID="SegmentSectorReference" Location="DriveConfiguration/Segment" Value="SegSec_06" />
+  </Module>
+  <Module Name="8F1I01.BA2B.xxxx-1_a" Type="8F1I01.BA2B.xxxx-1" Version="1.0.0.4" NodeNumber="6">
+    <Connection Connector="PLK1" TargetModule="8F1I01.BB4B.xxxx-1_c" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.AA66.Seg_0" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_12" />
+  </Module>
+  <Module Name="8F1I01.BB4B.xxxx-1" Type="8F1I01.BB4B.xxxx-1" Version="1.0.0.4" NodeNumber="9">
+    <Connection Connector="PLK1" TargetModule="8F1I01.AB2B.xxxx-1" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.BB4B.xxxx-1_a" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_03" />
+  </Module>
+  <Module Name="8F1I01.BB4B.xxxx-1_a" Type="8F1I01.BB4B.xxxx-1" Version="1.0.0.4" NodeNumber="10">
+    <Connection Connector="PLK1" TargetModule="8F1I01.BB4B.xxxx-1" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.BB4B.xxxx-1_b" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_04" />
+  </Module>
+  <Module Name="8F1I01.BB4B.xxxx-1_b" Type="8F1I01.BB4B.xxxx-1" Version="1.0.0.4" NodeNumber="11">
+    <Connection Connector="PLK1" TargetModule="8F1I01.BB4B.xxxx-1_a" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.BA2B.xxxx-1" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_05" />
+  </Module>
+  <Module Name="8F1I01.BB4B.xxxx-1_c" Type="8F1I01.BB4B.xxxx-1" Version="1.0.0.4" NodeNumber="5">
+    <Connection Connector="PLK1" TargetModule="8F1I01.BB4B.xxxx-1_d" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.BA2B.xxxx-1_a" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_11" />
+  </Module>
+  <Module Name="8F1I01.BB4B.xxxx-1_d" Type="8F1I01.BB4B.xxxx-1" Version="1.0.0.4" NodeNumber="4">
+    <Connection Connector="PLK1" TargetModule="8F1I01.BB4B.xxxx-1_e" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.BB4B.xxxx-1_c" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_10" />
+  </Module>
+  <Module Name="8F1I01.BB4B.xxxx-1_e" Type="8F1I01.BB4B.xxxx-1" Version="1.0.0.4" NodeNumber="3">
+    <Connection Connector="PLK1" TargetModule="8F1I01.AB2B.xxxx-1_a" TargetConnector="PLK2">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.BB4B.xxxx-1_d" TargetConnector="PLK1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Parameter ID="EnableDNA" Value="on" />
+    <Parameter ID="SegmentReference" Location="DriveConfiguration/Segment" Value="Seg_09" />
+    <Parameter ID="SegmentSectorReference" Location="DriveConfiguration/Segment" Value="SegSec_09" />
+  </Module>
+  <Module Name="X20BB82" Type="X20BB82" Version="1.2.0.0" />
+  <Module Name="X20BC8083" Type="X20BC8083" Version="2.17.0.0" NodeNumber="129">
+    <Connection Connector="PLK1" TargetModule="5ACCIF01.FPLK-000" TargetConnector="IF1">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="8F1I01.AA66.Seg_0" TargetConnector="PLK3">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="SL" TargetModule="X20BB82" TargetConnector="SL1" />
+    <Parameter ID="Supervision" Value="off" />
+  </Module>
+  <Module Name="X20BM11" Type="X20BM11" Version="1.1.0.0">
+    <Connection Connector="X2X1" TargetModule="X20BB82" TargetConnector="IF1" />
+  </Module>
+  <Module Name="X20BM15" Type="X20BM15" Version="1.1.0.0" NodeNumber="4">
+    <Connection Connector="X2X1" TargetModule="X20BM11" TargetConnector="X2X2" />
+  </Module>
+  <Module Name="X20BT9400" Type="X20BT9400" Version="1.3.1.0">
+    <Connection Connector="SS1" TargetModule="X20TB12_c" TargetConnector="SS" />
+    <Connection Connector="SL" TargetModule="X20BM15" TargetConnector="SL1" />
+    <Parameter ID="Supervision" Value="off" />
+  </Module>
+  <Module Name="X20DI9371" Type="X20DI9371" Version="1.6.1.0">
+    <Connection Connector="SS1" TargetModule="X20TB12_a" TargetConnector="SS" />
+    <Connection Connector="SL" TargetModule="X20BM11" TargetConnector="SL1" />
+    <Parameter ID="Supervision" Value="off" />
+  </Module>
+  <Module Name="X20HB2880" Type="X20HB2880" Version="1.2.1.0">
+    <Connection Connector="SS" TargetModule="X20BB82" TargetConnector="SS1" />
+  </Module>
+  <Module Name="X20HB2880_a" Type="X20HB2880" Version="1.2.1.0">
+    <Connection Connector="SS" TargetModule="X20BB82" TargetConnector="SS2" />
+  </Module>
+  <Module Name="X20PS9400" Type="X20PS9400" Version="1.8.1.0">
+    <Connection Connector="SS1" TargetModule="X20TB12" TargetConnector="SS" />
+    <Connection Connector="PS" TargetModule="X20BB82" TargetConnector="PS1" />
+    <Parameter ID="Supervision" Value="off" />
+  </Module>
+  <Module Name="X20TB12" Type="X20TB12" Version="1.0.0.0" />
+  <Module Name="X20TB12_a" Type="X20TB12" Version="1.0.0.0" />
+  <Module Name="X20TB12_c" Type="X20TB12" Version="1.0.0.0" />
+</Hardware>

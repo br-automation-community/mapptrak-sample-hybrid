@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Content id="MainContent" guid="0fee7fe0-3f89-4f8a-b424-82605b476a3d" height="780" width="1480" xmlns="http://www.br-automation.com/iat2015/contentDefinition/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:types="http://www.br-automation.com/iat2015/widgetTypes/v2">
+  <Widgets>
+    <Widget xsi:type="widgets.brease.PushButton" id="PushButton_Start" top="55" left="125" width="140" height="85" zIndex="0" image="Media/SymbolLib/Media/Play.svg" imageAlign="top" text="Start / Resume" imageHeight="50" imageWidth="50" imageColor="rgba(0, 255, 0, 1)" style="transparent" />
+    <Widget xsi:type="widgets.brease.PushButton" id="PushButton_Stop" top="55" left="370" width="65" height="85" zIndex="1" image="Media/SymbolLib/Media/Stop.svg" imageAlign="top" text="Stop" imageHeight="50" imageWidth="50" imageColor="rgba(255, 0, 0, 1)" style="transparent" />
+    <Widget xsi:type="widgets.brease.Label" id="Label_NrOfShuttles" top="165" left="120" width="150" zIndex="2" text="Number of shuttles" />
+    <Widget xsi:type="widgets.brease.NumericInput" id="NumericInput_NrOfShuttles" top="165" left="300" width="145" zIndex="3" format="{'metric':{'decimalPlaces':0,'minimumIntegerDigits':1},'imperial':{'decimalPlaces':0,'minimumIntegerDigits':1},'imperial-us':{'decimalPlaces':0,'minimumIntegerDigits':1}}" maxValue="20" />
+    <Widget xsi:type="widgets.brease.Label" id="Label_Velocity" top="210" left="120" width="150" zIndex="4" text="Velocity" />
+    <Widget xsi:type="widgets.brease.NumericInput" id="NumericInput_Velocity" top="210" left="300" width="145" zIndex="5" format="{'metric':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial-us':{'decimalPlaces':3,'minimumIntegerDigits':1}}" maxValue="4" minValue="0.5" unit="{'metric':'MTS','imperial':'MTS','imperial-us':'MTS'}" unitAlign="right" />
+    <Widget xsi:type="widgets.brease.Label" id="Label_Acceleration" top="255" left="120" width="150" zIndex="6" text="Acceleration" />
+    <Widget xsi:type="widgets.brease.NumericInput" id="NumericInput_Acceleration" top="255" left="300" width="145" zIndex="7" format="{'metric':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial-us':{'decimalPlaces':3,'minimumIntegerDigits':1}}" maxValue="20" minValue="10" unit="{'metric':'MSK','imperial':'MSK','imperial-us':'MSK'}" unitAlign="right" />
+    <Widget xsi:type="widgets.brease.Label" id="Label_Deceleration" top="300" left="120" width="150" zIndex="8" text="Deceleration" />
+    <Widget xsi:type="widgets.brease.NumericInput" id="NumericInput_Deceleration" top="300" left="300" width="145" zIndex="9" format="{'metric':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial-us':{'decimalPlaces':3,'minimumIntegerDigits':1}}" maxValue="20" minValue="10" unit="{'metric':'MSK','imperial':'MSK','imperial-us':'MSK'}" unitAlign="right" />
+    <Widget xsi:type="widgets.brease.Image" id="Image_Layout" top="40" left="490" width="945" height="400" zIndex="10" image="Media/LayoutHybrid.png" />
+    <Widget xsi:type="widgets.brease.Rectangle" id="Rectangle_Conveyor" top="110" left="829" width="277" height="38" zIndex="11" backColor="rgba(255, 136, 0, 1)" opacity="0.5" />
+    <Widget xsi:type="widgets.brease.Label" id="Label_Conveyor" top="117" left="927" height="25" zIndex="12" text="Conveyor" />
+    <Widget xsi:type="widgets.brease.Table" id="Table_Shuttles" top="480" left="490" width="280" height="270" zIndex="13">
+      <Widgets>
+        <Widget xsi:type="widgets.brease.TableItem" id="TableItem_Position" zIndex="0" columnWidth="180" format="{'metric':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial-us':{'decimalPlaces':3,'minimumIntegerDigits':1}}" input="true" maxLength="20" maxValue="4.56" showUnit="true" text="Position" unit="{'metric':'MTR','imperial':'MTR','imperial-us':'MTR'}" />
+        <Widget xsi:type="widgets.brease.TableItem" id="TableItem_ID" zIndex="1" input="true" text="ID" />
+      </Widgets>
+    </Widget>
+    <Widget xsi:type="widgets.brease.Line" id="Line1" zIndex="14" x1="1105" x2="1105" y1="300" y2="410" />
+    <Widget xsi:type="widgets.brease.Image" id="Image1" top="305" left="1070" width="25" height="25" zIndex="15" image="Media/SymbolLib/Arrow/ArrowLeft.svg" />
+    <Widget xsi:type="widgets.brease.Table" id="Table_Messages" top="480" left="825" width="610" height="270" zIndex="16" refreshRate="200" selection="false" showHeader="false">
+      <Widgets>
+        <Widget xsi:type="widgets.brease.TableItemDateTime" id="TableItemDateTime1" zIndex="0" columnWidth="125" format="HH:mm:ss" text="TableItemDateTime1" />
+        <Widget xsi:type="widgets.brease.TableItem" id="TableItem_Messages" zIndex="1" columnWidth="395" text="Events" />
+        <Widget xsi:type="widgets.brease.TableItemImageList" id="TableItemImageList_Arrows" zIndex="2" columnWidth="70" imageList="['Media/SymbolLib/Arrow/ArrowRight.svg', 'Media/SymbolLib/Arrow/ArrowLeft.svg']" text="Arrow" />
+      </Widgets>
+    </Widget>
+    <Widget xsi:type="widgets.brease.BasicSlider" id="BasicSlider_ConVel" top="440" left="120" width="310" height="90" zIndex="17" format="{'metric':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial-us':{'decimalPlaces':3,'minimumIntegerDigits':1}}" majorTicks="2" maxValue="2" minValue="0.5" showTickNumbers="true" showUnit="true" showValueDisplay="true" smallChange="0.001" tickPosition="bottom" unit="{'metric':'MTS','imperial':'MTS','imperial-us':'MTS'}" valueDisplaySize="40px" fontSize="16px" />
+    <Widget xsi:type="widgets.brease.Label" id="Label_ConVelocity" top="350" left="213" width="140" zIndex="18" text="Conveyor velocity" textAlign="center" bold="true" />
+    <Widget xsi:type="widgets.brease.GroupBox" id="GroupBox_AddShuttle" top="590" left="125" width="325" height="160" zIndex="19" text="Add shuttle during runtime">
+      <Widgets>
+        <Widget xsi:type="widgets.brease.Label" id="Label_Position" top="8" left="10" zIndex="0" text="Position" />
+        <Widget xsi:type="widgets.brease.NumericInput" id="NumericInput_Position" top="8" left="155" width="150" zIndex="1" format="{'metric':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial':{'decimalPlaces':3,'minimumIntegerDigits':1},'imperial-us':{'decimalPlaces':3,'minimumIntegerDigits':1}}" maxValue="0.66" unit="{'metric':'MTR','imperial':'MTR','imperial-us':'MTR'}" unitAlign="right" />
+        <Widget xsi:type="widgets.brease.Label" id="Label_ID" top="43" left="10" zIndex="2" text="ID" />
+        <Widget xsi:type="widgets.brease.TextInput" id="TextInput_ID" top="43" left="155" width="150" zIndex="3" textAlign="right" />
+        <Widget xsi:type="widgets.brease.PushButton" id="PushButton_AddShuttle" top="83" left="34" width="115" zIndex="4" text="Add shuttle" />
+        <Widget xsi:type="widgets.brease.PushButton" id="PushButton_AddShuttle_Confirm" top="83" left="174" width="115" zIndex="5" text="Continue" />
+      </Widgets>
+    </Widget>
+    <Widget xsi:type="widgets.brease.ImageList" id="ImageList_Running" top="208" left="932" width="70" height="65" zIndex="20" imageList="['Media/SymbolLib/Symbols/Engine.svg', 'Media/SymbolLib/Symbols/EngineMove.svg']" />
+    <Widget xsi:type="widgets.brease.PushButton" id="PushButton_Halt" top="55" left="275" width="75" height="85" zIndex="21" image="Media/SymbolLib/Media/Pause.svg" imageAlign="top" text="Halt" imageHeight="50" imageWidth="50" imageColor="rgba(0, 0, 255, 1)" style="transparent" />
+    <Widget xsi:type="widgets.brease.CheckBox" id="CheckBox_AutomaticVelocity" top="395" left="155" width="255" zIndex="22" text="Automatic velocity adjustment" value="true" />
+  </Widgets>
+</Content>

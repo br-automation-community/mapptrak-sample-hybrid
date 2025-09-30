@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="6.0"?>
+<OpcUaSource FileVersion="10">
+  <Aliases>
+    <ACLAliases />
+    <EURangeViolationAliases />
+    <EURangesAliases>
+      <EURanges Id="3">
+        <EURange>
+          <Low ValueProvider="Const">1</Low>
+          <High ValueProvider="Const">20</High>
+        </EURange>
+      </EURanges>
+      <EURanges Id="8">
+        <EURange>
+          <Low ValueProvider="Const">0</Low>
+          <High ValueProvider="Const">4.56</High>
+        </EURange>
+      </EURanges>
+      <EURanges Id="10">
+        <EURange>
+          <Low ValueProvider="Const">0</Low>
+          <High ValueProvider="Const">0.66</High>
+        </EURange>
+      </EURanges>
+      <EURanges Id="12">
+        <EURange>
+          <Low ValueProvider="Const">10</Low>
+          <High ValueProvider="Const">20</High>
+        </EURange>
+      </EURanges>
+      <EURanges Id="14">
+        <EURange>
+          <Low ValueProvider="Const">0.5</Low>
+          <High ValueProvider="Const">2</High>
+        </EURange>
+      </EURanges>
+      <EURanges Id="15">
+        <EURange>
+          <Low ValueProvider="Const">0.5</Low>
+          <High ValueProvider="Const">4</High>
+        </EURange>
+      </EURanges>
+    </EURangesAliases>
+    <EngineeringUnitAliases>
+      <EngineeringUnit Id="1" UnitId="5067595" NameSpaceUri="http://www.opcfoundation.org/UA/units/un/cefact" Name="metre per second squared" Symbol="m/s²" />
+      <EngineeringUnit Id="2" UnitId="5067859" NameSpaceUri="http://www.opcfoundation.org/UA/units/un/cefact" Name="metre per second" Symbol="m/s" />
+      <EngineeringUnit Id="3" UnitId="5067858" NameSpaceUri="http://www.opcfoundation.org/UA/units/un/cefact" Name="metre" Symbol="m" />
+    </EngineeringUnitAliases>
+  </Aliases>
+  <Module Name="&lt;Default&gt;">
+    <Task Name="Main">
+      <Variable Name="Acceleration" EURangesId="12" EngineeringUnitId="1" />
+      <Variable Name="ConveyorVelocity" EURangesId="14" EngineeringUnitId="2" />
+      <Variable Name="Deceleration" EURangesId="12" EngineeringUnitId="1" />
+      <Variable Name="Start" />
+      <Variable Name="Stop" />
+      <Variable Name="Velocity" EURangesId="15" EngineeringUnitId="2" />
+      <Variable Name="NrOfShuttles" EURangesId="3" />
+      <Variable Name="ErrorInfo" />
+      <Variable Name="ErrorReset" />
+      <Variable Name="ShuttleInitData" RecursiveEnable="2">
+        <Variable Name="Position" EURangesId="8" EngineeringUnitId="3" />
+      </Variable>
+      <Variable Name="Messages" RecursiveEnable="2" />
+      <Variable Name="ImageIndex" RecursiveEnable="2" />
+      <Variable Name="Timestamps" />
+      <Variable Name="AddPosition" EURangesId="10" EngineeringUnitId="3" />
+      <Variable Name="AddShuttle" />
+      <Variable Name="UserID" />
+      <Variable Name="EnableStations" />
+      <Variable Name="Halt" />
+      <Variable Name="AutomaticVelocityAdjustment" />
+      <Variable Name="AutomaticVelocityAdjNotActive" />
+      <Variable Name="BarrierClosed_AddShuttle" />
+      <Variable Name="ConfirmShuttleAdded" />
+    </Task>
+  </Module>
+</OpcUaSource>

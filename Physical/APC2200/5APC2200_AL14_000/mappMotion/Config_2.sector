@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Configuration>
+  <Element ID="Sector_1" Type="sector">
+    <Selector ID="Type">
+      <Group ID="StartSegment">
+        <Property ID="SegmentRef" Value="Seg_01" />
+      </Group>
+      <Group ID="IntermediateSegments">
+        <Property ID="SegmentRef[1]" Value="Seg_02" />
+        <Property ID="SegmentRef[2]" Value="Seg_03" />
+        <Property ID="SegmentRef[3]" Value="Seg_04" />
+        <Property ID="SegmentRef[4]" Value="Seg_05" />
+        <Property ID="SegmentRef[5]" Value="Seg_06" />
+        <Property ID="SegmentRef[6]" Value="Seg_07" />
+        <Property ID="SegmentRef[7]" Value="Seg_08" />
+        <Property ID="SegmentRef[8]" Value="Seg_09" />
+        <Property ID="SegmentRef[9]" Value="Seg_10" />
+        <Property ID="SegmentRef[10]" Value="Seg_11" />
+      </Group>
+      <Group ID="EndSegment">
+        <Property ID="SegmentRef" Value="Seg_12" />
+        <Property ID="PositionRelativeTo" Value="FromEnd" />
+      </Group>
+    </Selector>
+  </Element>
+  <Element ID="Sector_2" Type="sector">
+    <Selector ID="Type">
+      <Group ID="StartSegment">
+        <Property ID="SegmentRef" Value="Seg_08" />
+      </Group>
+      <Group ID="IntermediateSegments">
+        <Property ID="SegmentRef[1]" Value="Seg_09" />
+        <Property ID="SegmentRef[2]" Value="Seg_10" />
+        <Property ID="SegmentRef[3]" Value="Seg_11" />
+        <Property ID="SegmentRef[4]" Value="Seg_12" />
+        <Property ID="SegmentRef[5]" Value="Seg_01" />
+        <Property ID="SegmentRef[6]" Value="Seg_02" />
+        <Property ID="SegmentRef[7]" Value="Seg_03" />
+        <Property ID="SegmentRef[8]" Value="Seg_04" />
+        <Property ID="SegmentRef[9]" Value="Seg_05" />
+        <Property ID="SegmentRef[10]" Value="Seg_06" />
+      </Group>
+      <Group ID="EndSegment">
+        <Property ID="SegmentRef" Value="Seg_07" />
+        <Property ID="PositionRelativeTo" Value="FromEnd" />
+      </Group>
+    </Selector>
+  </Element>
+  <Element ID="Sector_3" Type="sector">
+    <Selector ID="Type">
+      <Group ID="StartSegment">
+        <Property ID="SegmentRef" Value="Seg_01" />
+      </Group>
+      <Group ID="EndSegment">
+        <Property ID="SegmentRef" Value="Seg_01" />
+        <Property ID="PositionRelativeTo" Value="FromEnd" />
+      </Group>
+    </Selector>
+  </Element>
+  <Element ID="Sector_4" Type="sector">
+    <Selector ID="Type">
+      <Group ID="StartSegment">
+        <Property ID="SegmentRef" Value="Seg_08" />
+      </Group>
+      <Group ID="IntermediateSegments">
+        <Property ID="SegmentRef[1]" Value="Seg_09" />
+        <Property ID="SegmentRef[2]" Value="Seg_10" />
+        <Property ID="SegmentRef[3]" Value="Seg_11" />
+        <Property ID="SegmentRef[4]" Value="Seg_12" />
+        <Property ID="SegmentRef[5]" Value="Seg_01" />
+        <Property ID="SegmentRef[6]" Value="Seg_02" />
+        <Property ID="SegmentRef[7]" Value="Seg_03" />
+        <Property ID="SegmentRef[8]" Value="Seg_04" />
+        <Property ID="SegmentRef[9]" Value="Seg_05" />
+      </Group>
+      <Group ID="EndSegment">
+        <Property ID="SegmentRef" Value="Seg_06" />
+        <Property ID="PositionRelativeTo" Value="FromEnd" />
+      </Group>
+    </Selector>
+  </Element>
+  <Element ID="SimSector" Type="sector">
+    <Selector ID="Type">
+      <Group ID="StartSegment">
+        <Property ID="SegmentRef" Value="Seg_08" />
+      </Group>
+      <Group ID="EndSegment">
+        <Property ID="SegmentRef" Value="Seg_08" />
+        <Property ID="Position" Value="0.07" />
+      </Group>
+    </Selector>
+  </Element>
+  <Element ID="Sector_Check_Free" Type="sector">
+    <Selector ID="Type" Value="Subsector">
+      <Property ID="SectorRef" Value="SegSec_06" />
+      <Group ID="Start">
+        <Property ID="PositionRelativeTo" Value="FromEnd" />
+      </Group>
+      <Property ID="Length" Value="0.199" />
+    </Selector>
+  </Element>
+</Configuration>

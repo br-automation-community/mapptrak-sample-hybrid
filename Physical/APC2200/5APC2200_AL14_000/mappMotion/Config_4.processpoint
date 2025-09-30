@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Configuration>
+  <Element ID="ProcessPoint_Entry" Type="processpoint">
+    <Selector ID="Type">
+      <Property ID="SectorRef" Value="SegSec_07" />
+      <Property ID="Position" Value="0.05" />
+      <Property ID="PositionRelativeTo" Value="FromEnd" />
+      <Selector ID="BarrierFunctionality" Value="On" />
+    </Selector>
+  </Element>
+  <Element ID="ProcessPoint_PreExit" Type="processpoint">
+    <Selector ID="Type">
+      <Property ID="SectorRef" Value="SegSec_06" />
+      <Property ID="Position" Value="0.2" />
+      <Property ID="PositionRelativeTo" Value="FromEnd" />
+      <Selector ID="BarrierFunctionality" Value="On" />
+    </Selector>
+  </Element>
+  <Element ID="ProcessPoint_Exit" Type="processpoint">
+    <Selector ID="Type">
+      <Property ID="SectorRef" Value="SegSec_06" />
+      <Property ID="Position" Value="0.135" />
+      <Property ID="PositionRelativeTo" Value="FromEnd" />
+      <Selector ID="BarrierFunctionality" Value="On" />
+    </Selector>
+  </Element>
+  <Element ID="ProcessPoint_Clear" Type="processpoint">
+    <Selector ID="Type">
+      <Property ID="SectorRef" Value="SegSec_09" />
+    </Selector>
+  </Element>
+  <Element ID="ProcessPoint_AddShuttle" Type="processpoint">
+    <Selector ID="Type">
+      <Property ID="SectorRef" Value="Sector_1" />
+      <Property ID="Position" Value="0.1" />
+      <Property ID="PositionRelativeTo" Value="FromEnd" />
+      <Selector ID="BarrierFunctionality" Value="On" />
+    </Selector>
+  </Element>
+</Configuration>

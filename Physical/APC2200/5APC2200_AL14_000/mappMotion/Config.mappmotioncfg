@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Configuration>
+  <Element ID="MappMotionConfiguration" Type="mappmotioncfg">
+    <Group ID="Diagnostics">
+      <Selector ID="Snapshot" Value="Used">
+        <Group ID="Files">
+          <Property ID="FileDevice" Value="SvgData" />
+          <Property ID="Directory" Value="snapshot" />
+          <Selector ID="Compression" Value="Not used" />
+          <Selector ID="Limits" Value="NotUsed" />
+        </Group>
+      </Selector>
+    </Group>
+  </Element>
+</Configuration>

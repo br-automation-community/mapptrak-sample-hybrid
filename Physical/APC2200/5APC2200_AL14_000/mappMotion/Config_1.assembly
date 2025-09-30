@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Configuration>
+  <Element ID="gAssembly_1" Type="assembly">
+    <Group ID="Tracks">
+      <Group ID="Track[1]">
+        <Group ID="Segments">
+          <Property ID="SegmentRef[1]" Value="Seg_01" />
+          <Property ID="SegmentRef[2]" Value="Seg_02" />
+          <Property ID="SegmentRef[3]" Value="Seg_03" />
+          <Property ID="SegmentRef[4]" Value="Seg_04" />
+          <Property ID="SegmentRef[5]" Value="Seg_05" />
+          <Property ID="SegmentRef[6]" Value="Seg_06" />
+          <Property ID="SegmentRef[7]" Value="Seg_07" />
+          <Property ID="SegmentRef[8]" Value="Seg_08" />
+          <Property ID="SegmentRef[9]" Value="Seg_09" />
+          <Property ID="SegmentRef[10]" Value="Seg_10" />
+          <Property ID="SegmentRef[11]" Value="Seg_11" />
+          <Property ID="SegmentRef[12]" Value="Seg_12" />
+        </Group>
+        <Selector ID="Position">
+          <Property ID="SegmentRef" Value="Seg_01" />
+        </Selector>
+      </Group>
+    </Group>
+    <Group ID="CommonSegmentSettings">
+      <Selector ID="StopReaction" Value="CoastToStandstill" />
+      <Group ID="ControllerParameters">
+        <Group ID="DefaultParameter">
+          <Group ID="Controller">
+            <Group ID="Position">
+              <Property ID="ProportionalGain" Value="150" />
+            </Group>
+            <Group ID="Speed">
+              <Property ID="ProportionalGain" Value="120" />
+            </Group>
+            <Group ID="FeedForward">
+              <Property ID="TotalMass" Value="1.25" />
+              <Property ID="ForcePositive" Value="1" />
+              <Property ID="ForceNegative" Value="1" />
+            </Group>
+          </Group>
+          <Group ID="MovementErrorLimits">
+            <Property ID="VelocityError" Value="2.4" />
+          </Group>
+        </Group>
+      </Group>
+      <Group ID="Compensation">
+        <Property ID="ElongationCompensation" Value="Active" />
+      </Group>
+      <Property ID="ShuttleIdentificationTime" Value="1" />
+    </Group>
+    <Group ID="Shuttles">
+      <Property ID="MaxShuttleCount" Value="100" />
+      <Group ID="ShuttleStereotypes">
+        <Property ID="ShuttleStRef[1]" Value="ShuttleStereotype_1" />
+      </Group>
+      <Group ID="MagnetPlateConfigurations">
+        <Selector ID="ShuttleType[1]" Value="8F1Sx.102.xxxxxx-x" />
+      </Group>
+      <Group ID="CollisionAvoidance">
+        <Selector ID="VirtualShColAvoidanceScope" Value="NoShuttles" />
+      </Group>
+    </Group>
+    <Group ID="AssemblyFeatures">
+      <Property ID="AssemblyFeatureRef[1]" Value="AssemblyFeature_Coupling" />
+      <Property ID="AssemblyFeatureRef[2]" Value="AssemblyFeature_Snapshot" />
+      <Property ID="AssemblyFeatureRef[3]" Value="AssemblyFeature_AutoAttach" />
+    </Group>
+  </Element>
+</Configuration>

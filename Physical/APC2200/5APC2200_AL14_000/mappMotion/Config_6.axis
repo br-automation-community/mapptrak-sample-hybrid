@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Configuration>
+  <Element ID="gAxis_1" Type="axis">
+    <Selector ID="BaseType" Value="Linear">
+      <Property ID="MeasurementUnit" Value="5067858" />
+      <Property ID="MeasurementResolution" Value="0.00001" />
+    </Selector>
+    <Selector ID="MovementLimits">
+      <Selector ID="Velocity">
+        <Property ID="Velocity" Value="2" />
+      </Selector>
+      <Selector ID="Acceleration">
+        <Property ID="Acceleration" Value="20" />
+      </Selector>
+      <Selector ID="Deceleration">
+        <Property ID="Deceleration" Value="20" />
+      </Selector>
+    </Selector>
+  </Element>
+</Configuration>
