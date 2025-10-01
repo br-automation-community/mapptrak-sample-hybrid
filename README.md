@@ -1,9 +1,10 @@
 # mapptrak-sample-hybrid
 
-This Automation Studio project demonstrates how to combine an **ACOPOStrak system** with a conventional conveyor belt.  
-The workspace of the ACOPOStrak system is extended using virtual segments ([B&R Online Help](https://www.br-automation.com)).  
+This Automation Studio project demonstrates how to integrate an ACOPOStrak system with a conventional conveyor belt. To achieve this, the workspace of the ACOPOStrak system is extended using [**virtual segments**](https://help.br-automation.com/#/en/6/motion/mapp_motion/mapp_trak/concept/segment_virtual.html).  
 
-This sample project showcases how to synchronize shuttle movement on the ACOPOStrak and the conveyor, and highlights the shuttle transfer between the two systems.
+This hybrid approach enables flexible transport solutions by combining the precision of ACOPOStrak with the continuous motion of conveyor systems.
+
+<img width="1314" height="492" alt="image" src="https://github.com/user-attachments/assets/976e0d7e-a9ec-443c-9f08-91a4d8da903f" />
 
 ---
 
@@ -45,6 +46,5 @@ This sample project showcases how to synchronize shuttle movement on the ACOPOSt
   - Password: *(leave blank)*  
 
 <img width="1314" height="492" alt="image" src="https://github.com/user-attachments/assets/976e0d7e-a9ec-443c-9f08-91a4d8da903f" />
-
 
 ---
