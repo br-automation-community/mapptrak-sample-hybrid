@@ -95,8 +95,7 @@ TYPE
 		( (*Mode of the axis controller*)
 		mcAXB_FF_MODE_STD := 0, (*Standard*)
 		mcAXB_FF_MODE_PRED_SPD := 1, (*Predictive speed*)
-		mcAXB_FF_MODE_TWO_MASS_MDL := 2, (*Two mass model*)
-		mcAXB_FF_MODE_FRICT_COMP := 3 (*Friction compensation*)
+		mcAXB_FF_MODE_TWO_MASS_MDL := 2 (*Two mass model*)
 		);
 	MpAXBDrvCtrlFFwdType : STRUCT (*Torque feed-forward control parameters*)
 		Mode : MpAXBDrvCtrlFFwdModEnum; (*Mode of the axis controller*)
@@ -107,9 +106,6 @@ TYPE
 		Inertia : REAL; (*Mass moment of inertia [kgm²]*)
 		AccelerationFilterTime : REAL; (*Acceleration filter time constant [s]*)
 		PredictionTime : REAL; (*Prediction time [s]*)
-		ActivationSpeed : REAL; (*Activation speed. Only for mode mcAXB_FF_MODE_FRICT_COMP [measurement units/s]*)
-		DeactivationLagError : REAL; (*Deactivation position error. Only for mode mcAXB_FF_MODE_FRICT_COMP [measurement unit]*)
-		TimeConstant : REAL; (*Time constant. Only for mode mcAXB_FF_MODE_FRICT_COMP [s]*)
 	END_STRUCT;
 	MpAXBDrvCtrlFdbkModEnum :
 		( (*Mode of the axis controller*)

@@ -1,6 +1,6 @@
 /* Automation Studio generated header file */
 /* Do not edit ! */
-/* McAxis 6.6.30012 */
+/* McAxis 6.5.0 */
 
 #ifndef _MCAXIS_
 #define _MCAXIS_
@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 #ifndef _McAxis_VERSION
-#define _McAxis_VERSION 6.6.30012
+#define _McAxis_VERSION 6.5.0
 #endif
 
 #include <bur/plctypes.h>
@@ -21,11 +21,11 @@ extern "C"
 #ifdef _SG4
 #include <McBase.h>
 #endif
-
+ 
 #ifdef _SG3
 #include <McBase.h>
 #endif
-
+ 
 #ifdef _SGC
 #include <McBase.h>
 #endif
@@ -1840,6 +1840,24 @@ typedef struct McCfgAxFeatAcpCycDatProcType
 {	enum McPTCEnum ProcessingTaskClass;
 } McCfgAxFeatAcpCycDatProcType;
 
+typedef struct MC_BR_CyclicDriveErrorDecel
+{
+	/* VAR_INPUT (analog) */
+	struct McAxisType* Axis;
+	struct McAdvCycDriveErrDecParType AdvancedParameters;
+	float CyclicDeceleration;
+	/* VAR_OUTPUT (analog) */
+	signed long ErrorID;
+	/* VAR (analog) */
+	struct McInternalType Internal;
+	/* VAR_INPUT (digital) */
+	plcbit Enable;
+	/* VAR_OUTPUT (digital) */
+	plcbit Valid;
+	plcbit Busy;
+	plcbit Error;
+} MC_BR_CyclicDriveErrorDecel_typ;
+
 typedef struct MC_BR_GetAxisLibraryInfo
 {
 	/* VAR_INPUT (analog) */
@@ -3495,27 +3513,10 @@ typedef struct MC_BR_PowerOnTest
 	plcbit Error;
 } MC_BR_PowerOnTest_typ;
 
-typedef struct MC_BR_CyclicDriveErrorDecel
-{
-	/* VAR_INPUT (analog) */
-	struct McAxisType* Axis;
-	struct McAdvCycDriveErrDecParType AdvancedParameters;
-	float CyclicDeceleration;
-	/* VAR_OUTPUT (analog) */
-	signed long ErrorID;
-	/* VAR (analog) */
-	struct McInternalType Internal;
-	/* VAR_INPUT (digital) */
-	plcbit Enable;
-	/* VAR_OUTPUT (digital) */
-	plcbit Valid;
-	plcbit Busy;
-	plcbit Error;
-} MC_BR_CyclicDriveErrorDecel_typ;
-
 
 
 /* Prototyping of functions and function blocks */
+_BUR_PUBLIC void MC_BR_CyclicDriveErrorDecel(struct MC_BR_CyclicDriveErrorDecel* inst);
 _BUR_PUBLIC void MC_BR_GetAxisLibraryInfo(struct MC_BR_GetAxisLibraryInfo* inst);
 _BUR_PUBLIC void MC_Power(struct MC_Power* inst);
 _BUR_PUBLIC void MC_Home(struct MC_Home* inst);
@@ -3591,7 +3592,6 @@ _BUR_PUBLIC void MC_WriteDigitalOutput(struct MC_WriteDigitalOutput* inst);
 _BUR_PUBLIC void MC_BR_CamGetObjectData(struct MC_BR_CamGetObjectData* inst);
 _BUR_PUBLIC void MC_BR_CheckAutCompensation(struct MC_BR_CheckAutCompensation* inst);
 _BUR_PUBLIC void MC_BR_PowerOnTest(struct MC_BR_PowerOnTest* inst);
-_BUR_PUBLIC void MC_BR_CyclicDriveErrorDecel(struct MC_BR_CyclicDriveErrorDecel* inst);
 
 
 #ifdef __cplusplus

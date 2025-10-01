@@ -437,9 +437,6 @@ TYPE
 	McCfgAsmSpeedFilt : STRUCT (*Main data type corresponding to McCfgTypeEnum mcCFG_ASM_SPEED_FILTER*)
 		SpeedFilter : McASMCSSSpdFltrType; (*Filter for actual speed calculation*)
 	END_STRUCT;
-	McCfgAsmMagnetPlate : STRUCT (*Main data type corresponding to McCfgTypeEnum mcCFG_ASM_MAGNET_PLATE*)
-		MagnetPlateConfigurations : McASMShMagnPltCfgType; (*Parameter settings for the magnet plates*)
-	END_STRUCT;
 	McCfgAsmScopeOfErrReaction : STRUCT (*Main data type corresponding to McCfgTypeEnum mcCFG_ASM_SCOPE_OF_ERR_REAC*)
 		ScopeErrorReaction : McASMCSSScpErrReacEnum; (*Setting for the minimal error reaction scope for segment and encoder errors*)
 	END_STRUCT;
@@ -457,9 +454,6 @@ TYPE
 	END_STRUCT;
 	McCfgAsmColAvoidAdjustMode : STRUCT (*Main data type corresponding to McCfgTypeEnum mcCFG_ASM_ADJUSTMENT_MODE*)
 		AdjustmentMode : McASMShColAvAdjModType; (*Adjustment mode*)
-	END_STRUCT;
-	McCfgAsmDistReserves : STRUCT (*Main data type corresponding to McCfgTypeEnum mcCFG_ASM_DIST_RESERVES*)
-		DistanceReserves : McASMShDistResType; (*Parameter setting for shuttle distance reserves*)
 	END_STRUCT;
 	McAFCCplgObjType : STRUCT (*Coupling object*)
 		Name : STRING[250]; (*Name of the coupling object*)
@@ -565,14 +559,9 @@ TYPE
 	McAFLLMotLimVelBasicType : STRUCT (*Type mcAFLLMLV_BASIC settings*)
 		Velocity : REAL; (*Velocity limit in any movement direction [measurement units/s]*)
 	END_STRUCT;
-	McAFLLMotLimVelAdvType : STRUCT (*Type mcAFLLMLV_ADV settings*)
-		Positive : REAL; (*[measurement units/s]*)
-		Negative : REAL; (*[measurement units/s]*)
-	END_STRUCT;
 	McAFLLMotLimVelType : STRUCT (*Limit the velocity*)
 		Type : McAFLLMotLimVelEnum; (*Velocity selector setting*)
 		Basic : McAFLLMotLimVelBasicType; (*Type mcAFLLMLV_BASIC settings*)
-		Advanced : McAFLLMotLimVelAdvType; (*Type mcAFLLMLV_ADV settings*)
 	END_STRUCT;
 	McAFLLMotLimAccEnum :
 		( (*Acceleration selector setting*)
@@ -583,37 +572,13 @@ TYPE
 	McAFLLMotLimAccBasicType : STRUCT (*Type mcAFLLMLA_BASIC settings*)
 		Acceleration : REAL; (*Acceleration limit in any movement direction [measurement units/s²]*)
 	END_STRUCT;
-	McAFLLMotLimAccAdvType : STRUCT (*Type mcAFLLMLA_ADV settings*)
-		Positive : REAL; (*Acceleration limit in positive movement direction [measurement units/s²]*)
-		Negative : REAL; (*Acceleration limit in negative movement direction [measurement units/s²]*)
-	END_STRUCT;
 	McAFLLMotLimAccType : STRUCT (*Limit the acceleration*)
 		Type : McAFLLMotLimAccEnum; (*Acceleration selector setting*)
 		Basic : McAFLLMotLimAccBasicType; (*Type mcAFLLMLA_BASIC settings*)
-		Advanced : McAFLLMotLimAccAdvType; (*Type mcAFLLMLA_ADV settings*)
-	END_STRUCT;
-	McAFLLMotLimDecEnum :
-		( (*Deceleration selector setting*)
-		mcAFLLMLD_NOT_USE := 0, (*Not used - Acceleration limit not used*)
-		mcAFLLMLD_BASIC := 1, (*Basic -*)
-		mcAFLLMLD_ADV := 2 (*Advanced -*)
-		);
-	McAFLLMotLimDecBasicType : STRUCT (*Type mcAFLLMLD_BASIC settings*)
-		Deceleration : REAL; (*Deceleration limit in any movement direction [measurement units/s²]*)
-	END_STRUCT;
-	McAFLLMotLimDecAdvType : STRUCT (*Type mcAFLLMLD_ADV settings*)
-		Positive : REAL; (*Acceleration limit in positive movement direction [measurement units/s²]*)
-		Negative : REAL; (*Acceleration limit in negative movement direction [measurement units/s²]*)
-	END_STRUCT;
-	McAFLLMotLimDecType : STRUCT (*Limit the deceleration*)
-		Type : McAFLLMotLimDecEnum; (*Deceleration selector setting*)
-		Basic : McAFLLMotLimDecBasicType; (*Type mcAFLLMLD_BASIC settings*)
-		Advanced : McAFLLMotLimDecAdvType; (*Type mcAFLLMLD_ADV settings*)
 	END_STRUCT;
 	McAFLLMotLimType : STRUCT (*Limits which are effective*)
 		Velocity : McAFLLMotLimVelType; (*Limit the velocity*)
 		Acceleration : McAFLLMotLimAccType; (*Limit the acceleration*)
-		Deceleration : McAFLLMotLimDecType; (*Limit the deceleration*)
 	END_STRUCT;
 	McAFLLType : STRUCT (*Local limit definition*)
 		Scope : McAFLLScpType; (*Defines for which shuttles the local limit applies*)
@@ -661,48 +626,9 @@ TYPE
 	McCfgAsmFeatSegGrpType : STRUCT (*Main data type corresponding to McCfgTypeEnum mcCFG_ASM_FEAT_SEG_GRP*)
 		SegmentGroup : McCfgUnboundedArrayType; (*Group of segments accessed by assembly functionality (Connect array of type McAFSGSegGrpType)*)
 	END_STRUCT;
-	McAFSNAsmSnTrgSegErrStopEnum :
-		( (*Segment error stop selector setting*)
-		mcAFSNATSES_NOT_USE := 0, (*Not used -*)
-		mcAFSNATSES_USE := 1 (*Used -*)
-		);
-	McAFSNAsmSnTrgSegErrStopType : STRUCT (*Segment error stop*)
-		Type : McAFSNAsmSnTrgSegErrStopEnum; (*Segment error stop selector setting*)
-	END_STRUCT;
-	McAFSNAsmSnTrgAsmErrStopEnum :
-		( (*Assembly error stop selector setting*)
-		mcAFSNATAES_NOT_USE := 0, (*Not used -*)
-		mcAFSNATAES_USE := 1 (*Used -*)
-		);
-	McAFSNAsmSnTrgAsmErrStopType : STRUCT (*Assembly error stop*)
-		Type : McAFSNAsmSnTrgAsmErrStopEnum; (*Assembly error stop selector setting*)
-	END_STRUCT;
-	McAFSNAsmSnTrgType : STRUCT
-		SegmentErrorStop : McAFSNAsmSnTrgSegErrStopType; (*Segment error stop*)
-		AssemblyErrorStop : McAFSNAsmSnTrgAsmErrStopType; (*Assembly error stop*)
-	END_STRUCT;
-	McAFSNAsmSnInclSVGEnum :
-		( (*Include SVG selector setting*)
-		mcAFSNAIS_NOT_USE := 0, (*Not used -*)
-		mcAFSNAIS_USE := 1 (*Used -*)
-		);
-	McAFSNAsmSnInclSVGType : STRUCT (*Include SVG file in snapshot*)
-		Type : McAFSNAsmSnInclSVGEnum; (*Include SVG selector setting*)
-	END_STRUCT;
-	McAFSNAsmSnInclCfgEnum :
-		( (*Include configuration selector setting*)
-		mcAFSNAIC_NOT_USE := 0, (*Not used -*)
-		mcAFSNAIC_USE := 1 (*Used -*)
-		);
-	McAFSNAsmSnInclCfgType : STRUCT (*Include configuration file in snapshot*)
-		Type : McAFSNAsmSnInclCfgEnum; (*Include configuration selector setting*)
-	END_STRUCT;
 	McAFSNAsmSnType : STRUCT (*Assembly snapshot*)
 		RecordedCycles : UDINT; (*Buffer size of recorded cycles*)
 		RecorderStopDelay : UDINT; (*Number of cycles to wait until the recording of data is stopped after a snapshot is triggered*)
-		Trigger : McAFSNAsmSnTrgType;
-		IncludeSVG : McAFSNAsmSnInclSVGType; (*Include SVG file in snapshot*)
-		IncludeConfiguration : McAFSNAsmSnInclCfgType; (*Include configuration file in snapshot*)
 	END_STRUCT;
 	McCfgAsmFeatSnapType : STRUCT (*Main data type corresponding to McCfgTypeEnum mcCFG_ASM_FEAT_SNAP*)
 		AssemblySnapshot : McAFSNAsmSnType; (*Assembly snapshot*)

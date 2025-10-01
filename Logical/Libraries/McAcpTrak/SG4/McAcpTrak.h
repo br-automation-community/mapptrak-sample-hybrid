@@ -1,6 +1,6 @@
 /* Automation Studio generated header file */
 /* Do not edit ! */
-/* McAcpTrak 6.6.30012 */
+/* McAcpTrak 6.5.0 */
 
 #ifndef _MCACPTRAK_
 #define _MCACPTRAK_
@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 #ifndef _McAcpTrak_VERSION
-#define _McAcpTrak_VERSION 6.6.30012
+#define _McAcpTrak_VERSION 6.5.0
 #endif
 
 #include <bur/plctypes.h>
@@ -19,24 +19,29 @@ extern "C"
 #endif
 
 #ifdef _SG4
-#include <McBase.h>
-#include <McAxis.h>
+#include <McBase.h> 
+#include <McAxis.h> 
 #include <MpBase.h>
 #endif
-
+ 
 #ifdef _SG3
-#include <McBase.h>
-#include <McAxis.h>
+#include <McBase.h> 
+#include <McAxis.h> 
 #include <MpBase.h>
 #endif
-
+ 
 #ifdef _SGC
-#include <McBase.h>
-#include <McAxis.h>
+#include <McBase.h> 
+#include <McAxis.h> 
 #include <MpBase.h>
 #endif
 
 /* Datatypes and datatypes of function blocks */
+typedef enum McAcpTrakDataBlockModeEnum
+{	mcACPTRAK_DATA_BLOCK_GET,
+	mcACPTRAK_DATA_BLOCK_SET
+} McAcpTrakDataBlockModeEnum;
+
 typedef enum McAcpTrakAdvRouteInfoValidEnum
 {	mcACPTRAK_ROUTE_VALID,
 	mcACPTRAK_ROUTE_DIFF_WORKSPACES,
@@ -409,11 +414,6 @@ typedef enum McAcpTrakMoveCycTcpVelModeEnum
 	mcACPTRAK_TCP_ABS_VEL
 } McAcpTrakMoveCycTcpVelModeEnum;
 
-typedef enum McAcpTrakDataBlockModeEnum
-{	mcACPTRAK_DATA_BLOCK_GET,
-	mcACPTRAK_DATA_BLOCK_SET
-} McAcpTrakDataBlockModeEnum;
-
 typedef enum McASMTrkPosEnum
 {	mcASMTP_ABS = 0,
 	mcASMTP_REL_TO_ONE_SEG = 1,
@@ -616,35 +616,9 @@ typedef enum McAFLLMotLimAccEnum
 	mcAFLLMLA_ADV = 2
 } McAFLLMotLimAccEnum;
 
-typedef enum McAFLLMotLimDecEnum
-{	mcAFLLMLD_NOT_USE = 0,
-	mcAFLLMLD_BASIC = 1,
-	mcAFLLMLD_ADV = 2
-} McAFLLMotLimDecEnum;
-
 typedef enum McAFESExFromEnum
 {	mcAFESEF_ASM_PWR_ON = 0
 } McAFESExFromEnum;
-
-typedef enum McAFSNAsmSnTrgSegErrStopEnum
-{	mcAFSNATSES_NOT_USE = 0,
-	mcAFSNATSES_USE = 1
-} McAFSNAsmSnTrgSegErrStopEnum;
-
-typedef enum McAFSNAsmSnTrgAsmErrStopEnum
-{	mcAFSNATAES_NOT_USE = 0,
-	mcAFSNATAES_USE = 1
-} McAFSNAsmSnTrgAsmErrStopEnum;
-
-typedef enum McAFSNAsmSnInclSVGEnum
-{	mcAFSNAIS_NOT_USE = 0,
-	mcAFSNAIS_USE = 1
-} McAFSNAsmSnInclSVGEnum;
-
-typedef enum McAFSNAsmSnInclCfgEnum
-{	mcAFSNAIC_NOT_USE = 0,
-	mcAFSNAIC_USE = 1
-} McAFSNAsmSnInclCfgEnum;
 
 typedef enum McSTypEnum
 {	mcST_COMP_SEC = 0,
@@ -769,6 +743,11 @@ typedef enum McVIRTSEGEmuEnum
 {	mcVIRTSEGE_INACT = 0,
 	mcVIRTSEGE_ACT = 1
 } McVIRTSEGEmuEnum;
+
+typedef struct McAcpTrakForceControlParameter
+{	plcbit Enable;
+	float Force;
+} McAcpTrakForceControlParameter;
 
 typedef struct McAcpTrakAdvAsmCmdErrParType
 {	plcstring SegmentGroup[33];
@@ -1595,11 +1574,6 @@ typedef struct McInternalSegmentIfType
 {	plcdword vtable;
 } McInternalSegmentIfType;
 
-typedef struct McAcpTrakForceControlParameter
-{	plcbit Enable;
-	float Force;
-} McAcpTrakForceControlParameter;
-
 typedef struct McASMTrkSegType
 {	struct McCfgUnboundedArrayType SegmentReference;
 } McASMTrkSegType;
@@ -1947,10 +1921,6 @@ typedef struct McCfgAsmSpeedFilt
 {	struct McASMCSSSpdFltrType SpeedFilter;
 } McCfgAsmSpeedFilt;
 
-typedef struct McCfgAsmMagnetPlate
-{	struct McASMShMagnPltCfgType MagnetPlateConfigurations;
-} McCfgAsmMagnetPlate;
-
 typedef struct McCfgAsmScopeOfErrReaction
 {	enum McASMCSSScpErrReacEnum ScopeErrorReaction;
 } McCfgAsmScopeOfErrReaction;
@@ -1974,10 +1944,6 @@ typedef struct McCfgAsmColAvoidStrategy
 typedef struct McCfgAsmColAvoidAdjustMode
 {	struct McASMShColAvAdjModType AdjustmentMode;
 } McCfgAsmColAvoidAdjustMode;
-
-typedef struct McCfgAsmDistReserves
-{	struct McASMShDistResType DistanceReserves;
-} McCfgAsmDistReserves;
 
 typedef struct McAFCCplgObjType
 {	plcstring Name[251];
@@ -2062,51 +2028,23 @@ typedef struct McAFLLMotLimVelBasicType
 {	float Velocity;
 } McAFLLMotLimVelBasicType;
 
-typedef struct McAFLLMotLimVelAdvType
-{	float Positive;
-	float Negative;
-} McAFLLMotLimVelAdvType;
-
 typedef struct McAFLLMotLimVelType
 {	enum McAFLLMotLimVelEnum Type;
 	struct McAFLLMotLimVelBasicType Basic;
-	struct McAFLLMotLimVelAdvType Advanced;
 } McAFLLMotLimVelType;
 
 typedef struct McAFLLMotLimAccBasicType
 {	float Acceleration;
 } McAFLLMotLimAccBasicType;
 
-typedef struct McAFLLMotLimAccAdvType
-{	float Positive;
-	float Negative;
-} McAFLLMotLimAccAdvType;
-
 typedef struct McAFLLMotLimAccType
 {	enum McAFLLMotLimAccEnum Type;
 	struct McAFLLMotLimAccBasicType Basic;
-	struct McAFLLMotLimAccAdvType Advanced;
 } McAFLLMotLimAccType;
-
-typedef struct McAFLLMotLimDecBasicType
-{	float Deceleration;
-} McAFLLMotLimDecBasicType;
-
-typedef struct McAFLLMotLimDecAdvType
-{	float Positive;
-	float Negative;
-} McAFLLMotLimDecAdvType;
-
-typedef struct McAFLLMotLimDecType
-{	enum McAFLLMotLimDecEnum Type;
-	struct McAFLLMotLimDecBasicType Basic;
-	struct McAFLLMotLimDecAdvType Advanced;
-} McAFLLMotLimDecType;
 
 typedef struct McAFLLMotLimType
 {	struct McAFLLMotLimVelType Velocity;
 	struct McAFLLMotLimAccType Acceleration;
-	struct McAFLLMotLimDecType Deceleration;
 } McAFLLMotLimType;
 
 typedef struct McAFLLType
@@ -2163,33 +2101,9 @@ typedef struct McCfgAsmFeatSegGrpType
 {	struct McCfgUnboundedArrayType SegmentGroup;
 } McCfgAsmFeatSegGrpType;
 
-typedef struct McAFSNAsmSnTrgSegErrStopType
-{	enum McAFSNAsmSnTrgSegErrStopEnum Type;
-} McAFSNAsmSnTrgSegErrStopType;
-
-typedef struct McAFSNAsmSnTrgAsmErrStopType
-{	enum McAFSNAsmSnTrgAsmErrStopEnum Type;
-} McAFSNAsmSnTrgAsmErrStopType;
-
-typedef struct McAFSNAsmSnTrgType
-{	struct McAFSNAsmSnTrgSegErrStopType SegmentErrorStop;
-	struct McAFSNAsmSnTrgAsmErrStopType AssemblyErrorStop;
-} McAFSNAsmSnTrgType;
-
-typedef struct McAFSNAsmSnInclSVGType
-{	enum McAFSNAsmSnInclSVGEnum Type;
-} McAFSNAsmSnInclSVGType;
-
-typedef struct McAFSNAsmSnInclCfgType
-{	enum McAFSNAsmSnInclCfgEnum Type;
-} McAFSNAsmSnInclCfgType;
-
 typedef struct McAFSNAsmSnType
 {	unsigned long RecordedCycles;
 	unsigned long RecorderStopDelay;
-	struct McAFSNAsmSnTrgType Trigger;
-	struct McAFSNAsmSnInclSVGType IncludeSVG;
-	struct McAFSNAsmSnInclCfgType IncludeConfiguration;
 } McAFSNAsmSnType;
 
 typedef struct McCfgAsmFeatSnapType
@@ -2418,6 +2332,44 @@ typedef struct McCfgVirtSegType
 	enum McVIRTSEGSegShpEnum SegmentShape;
 	struct McVIRTSEGEmuType Emulation;
 } McCfgVirtSegType;
+
+typedef struct MC_BR_SegSimOverride_AcpTrak
+{
+	/* VAR_INPUT (analog) */
+	struct McSegmentType* Segment;
+	struct McAcpTrakAdvSegSimParType AdvancedParameters;
+	/* VAR_OUTPUT (analog) */
+	signed long ErrorID;
+	/* VAR (analog) */
+	struct McInternalType Internal;
+	/* VAR_INPUT (digital) */
+	plcbit Execute;
+	/* VAR_OUTPUT (digital) */
+	plcbit Done;
+	plcbit Busy;
+	plcbit Error;
+} MC_BR_SegSimOverride_AcpTrak_typ;
+
+typedef struct MC_BR_ProcessDataBlock_AcpTrak
+{
+	/* VAR_INPUT (analog) */
+	struct McSegmentType* Segment;
+	unsigned short ParID;
+	unsigned long DataAddress;
+	unsigned long DataLength;
+	enum McAcpTrakDataBlockModeEnum Mode;
+	/* VAR_OUTPUT (analog) */
+	signed long ErrorID;
+	unsigned long DataBlockLength;
+	/* VAR (analog) */
+	struct McInternalType Internal;
+	/* VAR_INPUT (digital) */
+	plcbit Execute;
+	/* VAR_OUTPUT (digital) */
+	plcbit Done;
+	plcbit Busy;
+	plcbit Error;
+} MC_BR_ProcessDataBlock_AcpTrak_typ;
 
 typedef struct MC_BR_AsmCamPrepare_AcpTrak
 {
@@ -3951,47 +3903,11 @@ typedef struct MC_BR_TrgPointReadInfo_AcpTrak
 	plcbit Error;
 } MC_BR_TrgPointReadInfo_AcpTrak_typ;
 
-typedef struct MC_BR_SegSimOverride_AcpTrak
-{
-	/* VAR_INPUT (analog) */
-	struct McSegmentType* Segment;
-	struct McAcpTrakAdvSegSimParType AdvancedParameters;
-	/* VAR_OUTPUT (analog) */
-	signed long ErrorID;
-	/* VAR (analog) */
-	struct McInternalType Internal;
-	/* VAR_INPUT (digital) */
-	plcbit Execute;
-	/* VAR_OUTPUT (digital) */
-	plcbit Done;
-	plcbit Busy;
-	plcbit Error;
-} MC_BR_SegSimOverride_AcpTrak_typ;
-
-typedef struct MC_BR_ProcessDataBlock_AcpTrak
-{
-	/* VAR_INPUT (analog) */
-	struct McSegmentType* Segment;
-	unsigned short ParID;
-	unsigned long DataAddress;
-	unsigned long DataLength;
-	enum McAcpTrakDataBlockModeEnum Mode;
-	/* VAR_OUTPUT (analog) */
-	signed long ErrorID;
-	unsigned long DataBlockLength;
-	/* VAR (analog) */
-	struct McInternalType Internal;
-	/* VAR_INPUT (digital) */
-	plcbit Execute;
-	/* VAR_OUTPUT (digital) */
-	plcbit Done;
-	plcbit Busy;
-	plcbit Error;
-} MC_BR_ProcessDataBlock_AcpTrak_typ;
-
 
 
 /* Prototyping of functions and function blocks */
+_BUR_PUBLIC void MC_BR_SegSimOverride_AcpTrak(struct MC_BR_SegSimOverride_AcpTrak* inst);
+_BUR_PUBLIC void MC_BR_ProcessDataBlock_AcpTrak(struct MC_BR_ProcessDataBlock_AcpTrak* inst);
 _BUR_PUBLIC void MC_BR_AsmCamPrepare_AcpTrak(struct MC_BR_AsmCamPrepare_AcpTrak* inst);
 _BUR_PUBLIC void MC_BR_AsmCommandError_AcpTrak(struct MC_BR_AsmCommandError_AcpTrak* inst);
 _BUR_PUBLIC void MC_BR_AsmCopySegmentData_AcpTrak(struct MC_BR_AsmCopySegmentData_AcpTrak* inst);
@@ -4072,8 +3988,6 @@ _BUR_PUBLIC void MC_BR_ShSetUserID_AcpTrak(struct MC_BR_ShSetUserID_AcpTrak* ins
 _BUR_PUBLIC void MC_BR_ShSwitchSector_AcpTrak(struct MC_BR_ShSwitchSector_AcpTrak* inst);
 _BUR_PUBLIC void MC_BR_TrgPointEnable_AcpTrak(struct MC_BR_TrgPointEnable_AcpTrak* inst);
 _BUR_PUBLIC void MC_BR_TrgPointReadInfo_AcpTrak(struct MC_BR_TrgPointReadInfo_AcpTrak* inst);
-_BUR_PUBLIC void MC_BR_SegSimOverride_AcpTrak(struct MC_BR_SegSimOverride_AcpTrak* inst);
-_BUR_PUBLIC void MC_BR_ProcessDataBlock_AcpTrak(struct MC_BR_ProcessDataBlock_AcpTrak* inst);
 _BUR_PUBLIC unsigned short LLMInit(signed long sysInitPhase);
 
 

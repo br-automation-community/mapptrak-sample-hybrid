@@ -1535,39 +1535,3 @@ FUNCTION_BLOCK MC_BR_TrgPointReadInfo_AcpTrak (*Returns information about a trig
 		Internal : McInternalType;
 	END_VAR
 END_FUNCTION_BLOCK
-FUNCTION_BLOCK MC_BR_SegSimOverride_AcpTrak (*Overrides segment parameters for simulation purpose.*)
-	VAR_INPUT
-		Segment : REFERENCE TO McSegmentType; (*The segment reference establishes the connection between the function block and the segment.*)
-		Execute : BOOL; (*Execution of the function block begins on a rising edge of this input.*)
-		AdvancedParameters : McAcpTrakAdvSegSimParType; (*Advanced parameters*)
-	END_VAR
-	VAR_OUTPUT
-		Done : BOOL; (*Execution successful. Function block is finished.*)
-		Busy : BOOL; (*Function block is active and must continue to be called.*)
-		Error : BOOL; (*Execution error*)
-		ErrorID : DINT; (*Error number*)
-	END_VAR
-	VAR
-		Internal : McInternalType;
-	END_VAR
-END_FUNCTION_BLOCK
-FUNCTION_BLOCK MC_BR_ProcessDataBlock_AcpTrak
-	VAR_INPUT
-		Segment : REFERENCE TO McSegmentType; (*The segment reference establishes the connection between the function block and the segment.*)
-		Execute : BOOL; (*Execution of the function block begins on a rising edge of this input.*)
-		ParID : UINT; (*Parameter ID number of the data block to be read or written*)
-		DataAddress : UDINT; (*address of the data buffer for the data block*)
-		DataLength : UDINT; (*size of the data buffer for the data block transfer*)
-		Mode : McAcpTrakDataBlockModeEnum; (*selection if the data block should be read or written*)
-	END_VAR
-	VAR_OUTPUT
-		Done : BOOL; (*execution successful. FB finished*)
-		Busy : BOOL; (*FB is active and needs to be called*)
-		Error : BOOL; (*error occurred during operation*)
-		ErrorID : DINT; (*error number*)
-		DataBlockLength : UDINT; (*length of the read data block*)
-	END_VAR
-	VAR
-		Internal : McInternalType; (*internal variable*)
-	END_VAR
-END_FUNCTION_BLOCK

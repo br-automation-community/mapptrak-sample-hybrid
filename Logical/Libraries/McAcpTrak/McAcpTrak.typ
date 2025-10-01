@@ -1251,16 +1251,3 @@ TYPE
 		mcACPTRAK_TCP_ABS_VEL (*Absolute velocity of the TCP.*)
 	); (*Mode to specify the TCP velocity.*)
 END_TYPE
-TYPE
-	McAcpTrakForceControlParameter : STRUCT (*Force Control PV.*)
-		Enable: BOOL;
-		Force : REAL;
-	END_STRUCT;
-
-	McAcpTrakDataBlockModeEnum :
-	(
-		mcACPTRAK_DATA_BLOCK_GET,
-		mcACPTRAK_DATA_BLOCK_SET
-	);
-
-END_TYPE

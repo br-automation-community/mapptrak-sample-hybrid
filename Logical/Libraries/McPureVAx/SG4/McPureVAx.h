@@ -1,6 +1,6 @@
 /* Automation Studio generated header file */
 /* Do not edit ! */
-/* McPureVAx 6.6.30012 */
+/* McPureVAx 6.5.0 */
 
 #ifndef _MCPUREVAX_
 #define _MCPUREVAX_
@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 #ifndef _McPureVAx_VERSION
-#define _McPureVAx_VERSION 6.6.30012
+#define _McPureVAx_VERSION 6.5.0
 #endif
 
 #include <bur/plctypes.h>
@@ -19,17 +19,17 @@ extern "C"
 #endif
 
 #ifdef _SG4
-#include <McBase.h>
+#include <McBase.h> 
 #include <McAxis.h>
 #endif
-
+ 
 #ifdef _SG3
-#include <McBase.h>
+#include <McBase.h> 
 #include <McAxis.h>
 #endif
-
+ 
 #ifdef _SGC
-#include <McBase.h>
+#include <McBase.h> 
 #include <McAxis.h>
 #endif
 

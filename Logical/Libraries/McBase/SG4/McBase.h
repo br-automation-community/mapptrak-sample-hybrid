@@ -1,6 +1,6 @@
 /* Automation Studio generated header file */
 /* Do not edit ! */
-/* McBase 6.6.30012 */
+/* McBase 6.5.0 */
 
 #ifndef _MCBASE_
 #define _MCBASE_
@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 #ifndef _McBase_VERSION
-#define _McBase_VERSION 6.6.30012
+#define _McBase_VERSION 6.5.0
 #endif
 
 #include <bur/plctypes.h>
@@ -223,10 +223,8 @@ typedef enum McCfgTypeEnum
 {	mcCFG_NONE = 0,
 	mcCFG_HW_MODULE = 5,
 	mcCFG_MMCFG = 10,
-	mcCFG_ALMI = 100,
 	mcCFG_OBJ_HIER_GCS = 210,
 	mcCFG_OBJ_HIER = 200,
-	mcCFG_PRG_IP_AXGRP = 300,
 	mcCFG_WS = 800,
 	mcCFG_TOOLTBL = 900,
 	mcCFG_FRMTBL = 1000,
@@ -243,8 +241,6 @@ typedef enum McCfgTypeEnum
 	mcCFG_TRK_PATH_SCN = 1701,
 	mcCFG_TRK_PATH_AUT_CRT_COND = 1702,
 	mcCFG_PICK_CORE = 2100,
-	mcCFG_PICK_JOB = 2101,
-	mcCFG_PICK_OP_MOD = 2102,
 	mcCFG_PICK_REG = 2110,
 	mcCFG_PICK_REG_SCN = 2111,
 	mcCFG_PICK_OBJ_LST = 2120,
@@ -267,8 +263,6 @@ typedef enum McCfgTypeEnum
 	mcCFG_MOT_SYN = 10500,
 	mcCFG_MOT_INDUCT = 10501,
 	mcCFG_MOT_SYN_AMC = 10502,
-	mcCFG_MOT_BLDC = 10503,
-	mcCFG_MOT_STEP = 10504,
 	mcCFG_ACP_PL_IN_CARD_ENC = 10510,
 	mcCFG_ACP_MUL_PL_IN_CARD_ENC = 10511,
 	mcCFG_ACP_P3_PL_IN_CARD_ENC = 10512,
@@ -361,20 +355,6 @@ typedef enum McCfgTypeEnum
 	mcCFG_ACP_INV_AX = 13600,
 	mcCFG_ACP_INV_AX_REF = 13611,
 	mcCFG_ACP_INV_AX_MECH_ELM = 13612,
-	mcCFG_ACP_INV2_AX = 14600,
-	mcCFG_ACP_INV2_MOD = 14700,
-	mcCFG_ACP_INV2_ENC_AND_IO = 14710,
-	mcCFG_ACP_INV2_AX_REF = 14611,
-	mcCFG_ACP_INV2_AX_MECH_ELM = 14612,
-	mcCFG_ACP_INV2_ENC_LINK = 14014,
-	mcCFG_ACP_INV2_CTRL = 14015,
-	mcCFG_ACP_INV2_HOME = 14016,
-	mcCFG_ACP_INV2_STOP_REAC = 14017,
-	mcCFG_ACP_INV2_MOVE_ERR_LIM = 14018,
-	mcCFG_ACP_INV2_JERK_FLTR = 14019,
-	mcCFG_ACP_INV2_ZERO_VIB_FLTR = 14024,
-	mcCFG_ACP_INV2_DIG_IN = 14020,
-	mcCFG_ACP_INV2_AX_FEAT = 14022,
 	mcCFG_AXGRP_ADMIN = 20000,
 	mcCFG_AXGRP_FEAT_HOME_ORD = 20101,
 	mcCFG_AXGRP_FEAT_PWR_ON_ORD = 20102,
@@ -418,14 +398,12 @@ typedef enum McCfgTypeEnum
 	mcCFG_ASM_ADD_CTRL_PARAM = 31004,
 	mcCFG_ASM_STOP_REACTION = 31005,
 	mcCFG_ASM_SPEED_FILTER = 31006,
-	mcCFG_ASM_MAGNET_PLATE = 31007,
 	mcCFG_ASM_SCOPE_OF_ERR_REAC = 31008,
 	mcCFG_ASM_SH_IDENT_TIME = 31009,
 	mcCFG_ASM_POS_CTRL_LAG_MON = 31010,
 	mcCFG_ASM_DIVERTER = 31011,
 	mcCFG_ASM_STRATEGY = 31012,
 	mcCFG_ASM_ADJUSTMENT_MODE = 31013,
-	mcCFG_ASM_DIST_RESERVES = 31014,
 	mcCFG_ASM_FEAT_CPLG = 31101,
 	mcCFG_ASM_FEAT_SIM_SH_DEF = 31102,
 	mcCFG_ASM_FEAT_SEC_TRACE = 31103,
@@ -459,7 +437,6 @@ typedef enum McCfgTypeEnum
 	mcCFG_MS_5AX_CNC_XYZBC = 51503,
 	mcCFG_MS_5AX_CNC_XYZCA = 51504,
 	mcCFG_MS_6AX_CNC_ZXYBCA = 51603,
-	mcCFG_MS_3AX_SCARA_A = 52042,
 	mcCFG_MS_4AX_SCARA_A = 52041,
 	mcCFG_MS_2AX_DELTA_A = 52121,
 	mcCFG_MS_2AX_DELTA_B = 52122,
@@ -468,7 +445,6 @@ typedef enum McCfgTypeEnum
 	mcCFG_MS_3AX_DELTA_B = 52133,
 	mcCFG_MS_3AX_DELTA_XZC = 52134,
 	mcCFG_MS_4AX_DELTA_A = 52141,
-	mcCFG_MS_4AX_DELTA_A_ID = 53141,
 	mcCFG_MS_4AX_DELTA_B = 52142,
 	mcCFG_MS_4AX_DELTA_C = 52143,
 	mcCFG_MS_5AX_DELTA_A = 52151,
@@ -479,9 +455,7 @@ typedef enum McCfgTypeEnum
 	mcCFG_MS_5AX_ROB_B = 52502,
 	mcCFG_MS_6AX_ROB_A = 52601,
 	mcCFG_MS_6AX_ROB_B = 52602,
-	mcCFG_MS_6AX_ROB_C = 52603,
-	mcCFG_MS_6AX_ROB_D = 52604,
-	mcCFG_ACP_INV2_MOT = 14500
+	mcCFG_MS_6AX_ROB_C = 52603
 } McCfgTypeEnum;
 
 typedef enum McMMCProcProcTskCEnum
@@ -552,27 +526,10 @@ typedef enum McMcMMCDiSnUseFLimEnum
 	mcMMCDSUFL_USE = 1
 } McMcMMCDiSnUseFLimEnum;
 
-typedef enum McALMIEnum
-{	mcALMI_NONE = 0,
-	mcALMI_SHARED_ALM = 1,
-	mcALMI_MPALARMX = 2
-} McALMIEnum;
-
 typedef enum McOHGCSOTypEnum
 {	mcOHGCSOT_CMPT = 0,
 	mcOHGCSOT_STD_FRM = 1
 } McOHGCSOTypEnum;
-
-typedef enum McScnEleVisibilityEnum
-{	mcOHSEV_NOT_USE = 0,
-	mcOHSEV_VIS = 1,
-	mcOHSEV_INVIS = 2
-} McScnEleVisibilityEnum;
-
-typedef enum McScnBoundariesEnum
-{	mcSVB_NOT_USE = 0,
-	mcSVB_USE = 1
-} McScnBoundariesEnum;
 
 typedef enum McScnSurfaceEnum
 {	mcSOS_UDEF = 0,
@@ -800,13 +757,6 @@ typedef enum McCfgLocRotUnitEnum
 
 typedef enum McPTCEnum
 {	mcPTC_CYC_1 = 1,
-	mcPTC_CYC_2 = 2,
-	mcPTC_CYC_3 = 3,
-	mcPTC_CYC_4 = 4,
-	mcPTC_CYC_5 = 5,
-	mcPTC_CYC_6 = 6,
-	mcPTC_CYC_7 = 7,
-	mcPTC_CYC_8 = 8,
 	mcPTC_USE_MP_MOT_SET = 255
 } McPTCEnum;
 
@@ -1041,8 +991,7 @@ typedef struct McMMCLogSelType
 } McMMCLogSelType;
 
 typedef struct McMMCLogType
-{	plcstring mappMotionLoggerModuleSize[251];
-	struct McMMCLogSelType Selective;
+{	struct McMMCLogSelType Selective;
 } McMMCLogType;
 
 typedef struct McMMCMcAcpDrvType
@@ -1070,17 +1019,8 @@ typedef struct McMcMMCDiSnUseFType
 	struct McMcMMCDiSnUseFLimType Limits;
 } McMcMMCDiSnUseFType;
 
-typedef struct McMcMMCDiSnUseTrgTrgType
-{	plcstring Variable[251];
-} McMcMMCDiSnUseTrgTrgType;
-
-typedef struct McMcMMCDiSnUseTrgType
-{	struct McCfgUnboundedArrayType Trigger;
-} McMcMMCDiSnUseTrgType;
-
 typedef struct McMcMMCDiSnUseType
 {	struct McMcMMCDiSnUseFType Files;
-	struct McMcMMCDiSnUseTrgType Triggers;
 } McMcMMCDiSnUseType;
 
 typedef struct McMcMMCDiSnType
@@ -1099,26 +1039,6 @@ typedef struct McCfgMMCfgType
 	struct McMMCDiagnosticsType Diagnostics;
 } McCfgMMCfgType;
 
-typedef struct McALMISharedAlmType
-{	plcstring ComponentName[251];
-	plcstring ConfigPath[251];
-	plcstring ConfigLocation[251];
-} McALMISharedAlmType;
-
-typedef struct McALMIMpAlarmXType
-{	plcstring ComponentName[251];
-} McALMIMpAlarmXType;
-
-typedef struct McALMIType
-{	enum McALMIEnum Type;
-	struct McALMISharedAlmType SharedAlarms;
-	struct McALMIMpAlarmXType MpAlarmX;
-} McALMIType;
-
-typedef struct McCfgAlmIntType
-{	struct McALMIType Alarms;
-} McCfgAlmIntType;
-
 typedef struct McCfgTransXYZType
 {	double X;
 	double Y;
@@ -1130,17 +1050,6 @@ typedef struct McCfgOrientType
 	double Angle2;
 	double Angle3;
 } McCfgOrientType;
-
-typedef struct McScnBoundariesUseType
-{	enum McScnSurfaceEnum Material;
-	float Opacitiy;
-	enum McScnEleVisibilityEnum Dimensions;
-} McScnBoundariesUseType;
-
-typedef struct McScnBoundariesType
-{	enum McScnBoundariesEnum Type;
-	struct McScnBoundariesUseType Used;
-} McScnBoundariesType;
 
 typedef struct McOHGCSOTCType
 {	struct McCfgReferenceType ComponentReference;
@@ -1204,12 +1113,6 @@ typedef struct McOHFrmTrfType
 
 typedef struct McOHScnExType
 {	plcstring FileDevice[251];
-	plcstring FileName[251];
-	plcstring SceneName[251];
-	float ViewAngle;
-	float ViewDistance;
-	float ViewExtension;
-	struct McScnBoundariesType Boundaries;
 } McOHScnExType;
 
 typedef struct McCfgObjHierType
