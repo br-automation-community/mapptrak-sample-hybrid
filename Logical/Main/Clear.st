@@ -59,7 +59,8 @@ ACTION Clear:
 			MC_BR_ElasticMoveVel_Clear.Direction	:= mcDIR_POSITIVE;
 			MC_BR_ElasticMoveVel_Clear.Execute		:= NOT(Paused);
 			
-			IF EDGEPOS(MC_BR_ElasticMoveVel_Clear.Active) THEN
+			// If a global stop command is executed, reset the command and go back to the trigger state
+			IF EDGEPOS(MC_BR_ElasticMoveVel_Clear.Active) OR (MC_BR_ElasticMoveVel_Clear.Error AND MC_BR_AsmStop_0.Execute) THEN
 				MC_BR_ElasticMoveVel_Clear.Execute	:= FALSE;
 				ClearState	:= CLEAR_CHECK_TRIGGER;
 			ELSIF MC_BR_ElasticMoveVel_Clear.Error THEN

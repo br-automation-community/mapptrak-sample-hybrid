@@ -24,7 +24,6 @@
       </Group>
     </Group>
     <Group ID="CommonSegmentSettings">
-      <Selector ID="StopReaction" Value="CoastToStandstill" />
       <Group ID="ControllerParameters">
         <Group ID="DefaultParameter">
           <Group ID="Controller">
@@ -51,7 +50,7 @@
       <Property ID="ShuttleIdentificationTime" Value="1" />
     </Group>
     <Group ID="Shuttles">
-      <Property ID="MaxShuttleCount" Value="100" />
+      <Property ID="MaxShuttleCount" Value="20" />
       <Group ID="ShuttleStereotypes">
         <Property ID="ShuttleStRef[1]" Value="ShuttleStereotype_1" />
       </Group>
@@ -61,6 +60,9 @@
       <Group ID="CollisionAvoidance">
         <Selector ID="VirtualShColAvoidanceScope" Value="NoShuttles" />
       </Group>
+      <Selector ID="BackupShuttleData" Value="Used">
+        <Property ID="BackupVar" Value="::Main:ShuttleData" />
+      </Selector>
     </Group>
     <Group ID="AssemblyFeatures">
       <Property ID="AssemblyFeatureRef[1]" Value="AssemblyFeature_Coupling" />

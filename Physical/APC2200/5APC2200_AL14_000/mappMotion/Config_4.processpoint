@@ -38,4 +38,11 @@
       <Selector ID="BarrierFunctionality" Value="On" />
     </Selector>
   </Element>
+  <Element ID="ProcessPoint_Safety" Type="processpoint">
+    <Selector ID="Type">
+      <Property ID="SectorRef" Value="SegSec_06" />
+      <Property ID="PositionRelativeTo" Value="FromEnd" />
+      <Selector ID="BarrierFunctionality" Value="On" />
+    </Selector>
+  </Element>
 </Configuration>

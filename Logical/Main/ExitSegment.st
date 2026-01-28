@@ -17,7 +17,7 @@ ACTION ExitSegment:
 		// Wait for enable the station
 		EXIT_INIT:
 			IF EnableStations AND NOT(Paused) THEN
-				AddTicket	:= TRUE;
+				AddTicket	:= TRUE; // Allow one shuttle through barrier
 				ExitState	:= EXIT_CHECK_TRIGGER;
 				MC_BR_BarrierReadInfo_Exit.Enable	:= TRUE;
 			END_IF;
@@ -25,6 +25,11 @@ ACTION ExitSegment:
 		// Check for a shuttle passing the trigger
 		EXIT_CHECK_TRIGGER:
 			MC_BR_TrgPointEnable_Exit.Enable		:= TRUE;
+			
+			// If the barrier is still closed, add another ticket
+			IF MC_BR_BarrierReadInfo_Exit.BarrierInfo.Status = mcACPTRAK_BARRIER_CLOSED THEN
+				AddTicket	:= TRUE; // Allow one shuttle through barrier
+			END_IF;
 		
 			IF MC_BR_TrgPointEnable_Exit.Valid AND MC_BR_TrgPointEnable_Exit.EventCount > 0 THEN
 				ExitState	:= EXIT_GET_SHUTTLE;
@@ -71,7 +76,7 @@ ACTION ExitSegment:
 		// Set a cyclic MoveVel to the shuttle with the same speed as the conveyor
 		EXIT_CYCMOVEVEL:
 			FOR Index := 0 TO MAX_SHUTTLES_MIN_ONE DO
-				IF Shuttle[Index].controlif	= ExitShuttle.controlif THEN
+				IF Shuttle[Index].controlif	= ExitShuttle.controlif AND State = READY THEN
 					MC_BR_MoveCyclicTcpVel_0[Index].Enable	:= TRUE;
 					EXIT;
 				END_IF;
@@ -106,7 +111,8 @@ ACTION ExitSegment:
 	END_IF;
 	
 	// If no movement of the conveyor is active, close the barrier to prevent shuttles going onto the conveyor
-	IF (MpAxisBasic_0.MoveActive = FALSE OR MpAxisBasic_0.Velocity = 0.0 OR StopConveyor OR Paused) AND 
+	// Additionally close the barrier during the cleaning phase of the conveyor
+	IF (MpAxisBasic_0.MoveActive = FALSE OR StopConveyor OR Paused OR (State >= CLEAN_CONVEYOR AND State <= CLEAN_CONVEYOR_ABORT)) AND 
 		MC_BR_BarrierReadInfo_Exit.BarrierInfo.Status <> mcACPTRAK_BARRIER_CLOSED AND MC_BR_BarrierReadInfo_Exit.Valid THEN
 		
 		AddTicket	:= FALSE;
@@ -114,7 +120,7 @@ ACTION ExitSegment:
 		MC_BR_BarrierCmd_Exit.Execute	:= TRUE;
 		
 	// Open the conveyor when the movement is active
-	ELSIF MpAxisBasic_0.MoveActive AND MpAxisBasic_0.Velocity <> 0.0 AND StopConveyor = FALSE AND Paused = FALSE AND AddTicket AND MC_BR_BarrierReadInfo_Exit.BarrierInfo.RemainingTickets = 0 AND
+	ELSIF MpAxisBasic_0.MoveActive AND StopConveyor = FALSE AND Paused = FALSE AND AddTicket AND MC_BR_BarrierReadInfo_Exit.BarrierInfo.RemainingTickets = 0 AND
 		(MC_BR_BarrierReadInfo_Exit.BarrierInfo.Status = mcACPTRAK_BARRIER_CLOSED OR MC_BR_BarrierReadInfo_Exit.BarrierInfo.Status = mcACPTRAK_BARRIER_TICKETING) AND MC_BR_BarrierReadInfo_Exit.Valid THEN
 		
 		AddTicket	:= FALSE;

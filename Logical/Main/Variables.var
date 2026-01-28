@@ -2,6 +2,11 @@
 VAR CONSTANT
 	MAX_SHUTTLES : USINT := 20; (*Max shuttles on the trak*)
 	MAX_SHUTTLES_MIN_ONE : USINT := MAX_SHUTTLES-1; (*Max shuttles on the trak minus one*)
+	CONVEYOR_CLEAN_TIME : TIME := T#1500ms; (*Time to run the conveyor during cleaning phase*)
+	DEFAULT_ADD_POSITION : REAL := 0.1; (*Default position for adding shuttles*)
+	ENTRY_POSITION_THRESHOLD : REAL := 0.0; (*Position threshold for entry segment*)
+	CLEAR_POSITION_THRESHOLD : REAL := 0.2; (*Position threshold for velocity adjustment calculation*)
+	SHUTTLE_SPACING : LREAL := 0.1; (*Spacing between shuttles during initialization*)
 END_VAR
 (**********************************************************************************************************************************************************************************************************************)
 VAR
@@ -14,14 +19,18 @@ VAR
 	MC_BR_SecAddShuttle_Main : MC_BR_SecAddShuttle_AcpTrak; (*FUB to add shuttles to the sector*)
 	MC_BR_SecGetShuttle_0 : MC_BR_SecGetShuttle_AcpTrak; (*FUB to read all shuttle references*)
 	MC_BR_ShSetUserID_0 : MC_BR_ShSetUserID_AcpTrak; (*FUB to set the UserID*)
+	MC_BR_SecAddShuttle_Clean : MC_BR_SecAddShuttle_AcpTrak; (*FUB to catch all shuttles during the cleaning phase of the conveyor*)
 	MC_BR_SecReadInfo_Seg08 : MC_BR_SecReadInfo_AcpTrak; (*FUB to read the sector info for SegSec_08*)
 	MC_BR_ElasticMoveVel_0 : MC_BR_ElasticMoveVel_AcpTrak; (*FUB to move all shuttles elastic*)
 	MC_BR_ShReadInfo_Main : ARRAY[0..MAX_SHUTTLES_MIN_ONE] OF MC_BR_ShReadInfo_AcpTrak; (*FUB to read the shuttle info*)
+	MC_BR_BarrierCmd_Safety : MC_BR_BarrierCommand_AcpTrak; (*FUB to control the barrier at the beginning of the conveyor*)
 	MpAxisBasic_0 : MpAxisBasic; (*FUB to use a single axis*)
 	AxisParams : MpAxisBasicParType; (*Parameter structure for MpAxisBasic*)
 	MpAxisCyclicSet_0 : MpAxisCyclicSet; (*FUB to override cyclically values of the axis (velocity)*)
 	CyclicSetParams : MpAxisCyclicSetParType; (*Parameter structure for MpAxisCyclicSet*)
 	MC_BR_MoveCyclicTcpVel_0 : ARRAY[0..MAX_SHUTTLES_MIN_ONE] OF MC_BR_MoveCyclicTcpVel_AcpTrak; (*FUB to move shuttles cyclic velocity*)
+	Timer : TON; (*Time to wait to clean the conveyor from shuttles*)
+	AbortCleaningCatch : BOOL; (*If an error occurs catching shuttles during the cleaning phase, abort the catch and not go to READY*)
 END_VAR
 (**********************************************************************************************************************************************************************************************************************)
 VAR
@@ -38,6 +47,7 @@ VAR
 	ConveyorVelocity : REAL; (*Cyclic velocity for the conveyor and shuttles on the conveyor*)
 	Shuttle : ARRAY[0..MAX_SHUTTLES_MIN_ONE] OF McAxisType; (*Shuttle objects*)
 	ShuttleInitData : ShuttleInitDataType; (*Initial shuttle data, Position, ID*)
+	TempIDStr : STRING[20]; (*Temporary string for ID conversion*)
 	NrOfShuttles : UINT; (*Number of shuttles on the system*)
 	Velocity : REAL; (*Global velocity for the trak*)
 	Acceleration : REAL; (*Global acceleration*)
@@ -48,14 +58,22 @@ VAR
 	Paused : BOOL; (*Paused flag*)
 	UserIDSet : BOOL; (*Flag to check if UserID is already set*)
 	Cnt : USINT; (*Counter*)
-	ShIndex : SINT; (*Shuttle index*)
+	UserIDs : ARRAY[0..MAX_SHUTTLES_MIN_ONE] OF STRING[80]; (*UserIDs of the Shuttles*)
+	ShuttleData : ARRAY[0..1599] OF USINT; (*DataBuffer to recover UserData depending on the UserID*)
+	DeleteAll : BOOL; (*If the whole application is stopped delete all shuttles (not only the virtual shuttles)*)
+	MachineRunning : BOOL; (*Bool for mappView Visu if machine is running*)
+END_VAR
+(**********************************************************************************************************************************************************************************************************************)
+VAR
+	MC_BR_ShReadInfo_GetIDS : MC_BR_ShReadInfo_AcpTrak; (*FUB to read the Shuttle UserID when stopping/errorstop the application*)
+	Shuttle_Conveyor : ARRAY[0..MAX_SHUTTLES_MIN_ONE] OF McAxisType; (*Virtual shuttles found while reading the UserIDs of the virtual shuttles*)
+	NrOfShuttlesOnConveyor : UINT; (*Number of virtual shuttles on the conveyor, check how many shuttle UserIDs need to be found*)
 END_VAR
 (**********************************************************************************************************************************************************************************************************************)
 VAR
 	EntryState : EntryStateEnum; (*Entry state (Exit conveyor)*)
 	EntryShuttle : McAxisType; (*Shuttle entered the trak*)
 	VirtShID : UDINT; (*Virtual shuttle ID of the entered shuttle*)
-	ShVelocity : REAL; (*Velocity of the shuttle (for simulation)*)
 	MC_BR_TrgPointEnable_Entry : MC_BR_TrgPointEnable_AcpTrak; (*FUB to get Trigger events*)
 	MC_BR_TrgPointReadInfo_Entry : MC_BR_TrgPointReadInfo_AcpTrak; (*FUB to read shuttle from trigger event*)
 	MC_BR_ShReadInfo_Entry : MC_BR_ShReadInfo_AcpTrak; (*FUB to read shuttle information*)
@@ -121,4 +139,9 @@ VAR
 	MC_BR_ShReadInfo_Calc : MC_BR_ShReadInfo_AcpTrak; (*FUB to read the shuttle info*)
 	CalcShuttle : McAxisType; (*Shuttle reference of the last catched shuttle*)
 	OldShuttle_Calc : McAxisType; (*Old shuttle reference to check if new one is available*)
+END_VAR
+(**********************************************************************************************************************************************************************************************************************)
+VAR
+	LastState : StateEnum; (*Last main state for change tracking*)
+	StateHistory : ARRAY[0..9] OF StateEnum; (*History of last 10 states for debugging*)
 END_VAR

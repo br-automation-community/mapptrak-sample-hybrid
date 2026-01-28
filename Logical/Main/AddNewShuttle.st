@@ -28,10 +28,11 @@ ACTION AddNewShuttle:
 			
 			IF MC_BR_BarrierCmd_AddShuttle.Done THEN
 				MC_BR_BarrierCmd_AddShuttle.Execute		:= FALSE;
+				// Simulation: immediate add | Hardware: power cycle segment first
 				IF SimActive THEN
 					AddShuttleState	:= ADDSHUTTLE_ADD_SHUTTLE;
 				ELSE
-					BarrierClosed_AddShuttle	:= TRUE;
+					BarrierClosed_AddShuttle	:= TRUE; // Signal UI that user can place shuttle
 					AddShuttleState	:= ADDSHUTTLE_POWER_OFF_SEGMENT;
 				END_IF;
 			ELSIF MC_BR_BarrierCmd_AddShuttle.Error THEN
@@ -52,6 +53,7 @@ ACTION AddNewShuttle:
 			MC_BR_SecAddShuttle_AddShuttle.AdvancedParameters.Acceleration	:= Acceleration;
 			MC_BR_SecAddShuttle_AddShuttle.AdvancedParameters.Deceleration	:= Deceleration;
 			MC_BR_SecAddShuttle_AddShuttle.AdvancedParameters.UserID		:= UserID;
+			// Only add shuttle when sector is at rest, data is valid, and no other shuttles present
 			IF MC_BR_SecReadInfo_AddShuttle.SectorInfo.InRest AND MC_BR_SecReadInfo_AddShuttle.Valid AND MC_BR_SecReadInfo_AddShuttle.SectorInfo.ShuttleCount.Count = 0 THEN
 				MC_BR_SecAddShuttle_AddShuttle.Execute	:= TRUE;
 				AddShuttleState	:= ADDSHUTTLE_CHECK_CREATED;
@@ -68,7 +70,7 @@ ACTION AddNewShuttle:
 				AddShuttleState	:= ADDSHUTTLE_ERROR;
 			END_IF;
 			// Check if new shuttle created
-			AxisOld	:= MC_BR_SecAddShuttle_AddShuttle.Axis;
+			AxisOld	:= MC_BR_SecAddShuttle_AddShuttle.Axis; // Store reference to detect controlif change (new shuttle created)
 				
 		// Power off the segment
 		ADDSHUTTLE_POWER_OFF_SEGMENT:

@@ -74,6 +74,7 @@
       <Variable Name="AutomaticVelocityAdjNotActive" />
       <Variable Name="BarrierClosed_AddShuttle" />
       <Variable Name="ConfirmShuttleAdded" />
+      <Variable Name="MachineRunning" />
     </Task>
   </Module>
 </OpcUaSource>

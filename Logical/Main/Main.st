@@ -67,63 +67,31 @@ PROGRAM _INIT
 	SimActive	:= DiagCpuIsSimulated();
 	
 	// Set default values for the shuttles
-	NrOfShuttles	:= 4;
+	NrOfShuttles	:= 4; // Default number of shuttles for demo application
 	
-	ShuttleInitData.Position[0]	:= 0.1;
-	ShuttleInitData.Position[1]	:= 0.2;
-	ShuttleInitData.Position[2]	:= 0.3;
-	ShuttleInitData.Position[3]	:= 0.4;
-	ShuttleInitData.Position[4]	:= 0.5;
-	ShuttleInitData.Position[5]	:= 0.6;
-	ShuttleInitData.Position[6]	:= 0.7;
-	ShuttleInitData.Position[7]	:= 0.8;
-	ShuttleInitData.Position[8]	:= 0.9;
-	ShuttleInitData.Position[9]	:= 1.0;
-	ShuttleInitData.Position[10]:= 1.1;
-	ShuttleInitData.Position[11]:= 1.2;
-	ShuttleInitData.Position[12]:= 1.3;
-	ShuttleInitData.Position[13]:= 1.4;
-	ShuttleInitData.Position[14]:= 1.5;
-	ShuttleInitData.Position[15]:= 1.6;
-	ShuttleInitData.Position[16]:= 1.7;
-	ShuttleInitData.Position[17]:= 1.8;
-	ShuttleInitData.Position[18]:= 1.9;
-	ShuttleInitData.Position[19]:= 2.0;
-	
-	ShuttleInitData.ID[0]		:= 'ID1';
-	ShuttleInitData.ID[1]		:= 'ID2';
-	ShuttleInitData.ID[2]		:= 'ID3';
-	ShuttleInitData.ID[3]		:= 'ID4';
-	ShuttleInitData.ID[4]		:= 'ID5';
-	ShuttleInitData.ID[5]		:= 'ID6';
-	ShuttleInitData.ID[6]		:= 'ID7';
-	ShuttleInitData.ID[7]		:= 'ID8';
-	ShuttleInitData.ID[8]		:= 'ID9';
-	ShuttleInitData.ID[9]		:= 'ID10';
-	ShuttleInitData.ID[10]		:= 'ID11';
-	ShuttleInitData.ID[11]		:= 'ID12';
-	ShuttleInitData.ID[12]		:= 'ID13';
-	ShuttleInitData.ID[13]		:= 'ID14';
-	ShuttleInitData.ID[14]		:= 'ID15';
-	ShuttleInitData.ID[15]		:= 'ID16';
-	ShuttleInitData.ID[16]		:= 'ID17';
-	ShuttleInitData.ID[17]		:= 'ID18';
-	ShuttleInitData.ID[18]		:= 'ID19';
-	ShuttleInitData.ID[19]		:= 'ID20';
-	
-	AddPosition					:= 0.1;
+	// Initialize shuttle positions (spaced evenly) and IDs (ID1, ID2, ID3, ...)
+	FOR Index := 0 TO MAX_SHUTTLES_MIN_ONE DO
+		ShuttleInitData.Position[Index]	:= DEFAULT_ADD_POSITION + (USINT_TO_LREAL(Index) * SHUTTLE_SPACING);
+		brsitoa(Index + 1, ADR(TempIDStr));
+		ShuttleInitData.ID[Index] := 'ID';
+		brsstrcat(ADR(ShuttleInitData.ID[Index]), ADR(TempIDStr));
+	END_FOR;
+
+	AddPosition					:= DEFAULT_ADD_POSITION;
 	UserID						:= 'UserID';
 	
 	// Set default movement parameter
-	Velocity		:= 2.0;
-	Acceleration	:= 20.0;
-	Deceleration	:= 20.0;
+	Velocity 		:= 2.0;       // m/s - Default trak velocity
+	Acceleration 	:= 20.0;      // m/s² - Default acceleration
+	Deceleration 	:= 20.0;      // m/s² - Default deceleration
 	ConveyorVelocity:= Velocity;
 	
 	AutomaticVelocityAdjustment	:= TRUE;
 	
 	// Set no error information
 	ErrorInfo	:= 'No error';
+	
+	ShuttleData;
 	 
 END_PROGRAM
 
@@ -133,8 +101,9 @@ PROGRAM _CYCLIC
 	IF Stop AND (State > GET_SHUTTLE_WAIT OR State = INIT) AND State <> ERROR THEN
 		Start	:= FALSE;
 		Stop	:= FALSE;
-		State	:= DELETE_SHUTTLES;
-		StateAxis	:= AXIS_POWER_OFF;
+		IF MC_BR_AsmReadInfo_0.AssemblyInfo.PLCopenState = mcACPTRAK_READY THEN
+			State	:= STOP_SHUTTLES;
+		END_IF;
 	END_IF;
 	
 	// Reset Halt and Stop when the application is not ready
@@ -153,6 +122,13 @@ PROGRAM _CYCLIC
 		// Wait until the start command is set
 		// If the application was paused by the Halt command, do not set new shuttles and do not power on again
 		INIT:
+			MC_BR_AsmReadInfo_0.Enable		:= TRUE;
+			
+			// If any virtual shuttles are on the system, get the IDs from end to start and delete all virtual shuttles
+			IF MC_BR_AsmReadInfo_0.Valid AND MC_BR_AsmReadInfo_0.AssemblyInfo.ShuttleCount.VirtualShuttles > 0 AND NOT(SimActive) THEN
+				State	:= GET_SHUTTLE_IDS_ON_CONVEYOR_INIT;
+			END_IF;
+			
 			IF Start THEN
 				IF Paused AND MC_BR_AsmReadInfo_0.AssemblyInfo.PLCopenState = mcACPTRAK_READY THEN
 					State	:= GET_SHUTTLE_INIT;
@@ -170,7 +146,13 @@ PROGRAM _CYCLIC
 		POWER_ON:
 			MC_BR_AsmPowerOn_0.Execute		:= TRUE;
 			
-			IF MC_BR_AsmPowerOn_0.Done THEN
+			// Close the barrier at the beginning of the conveyor to prevent shuttles to move onto the convoy during cleaning phase
+			MC_BR_BarrierCmd_Safety.ProcessPoint	:= ADR(ProcessPoint_Safety);
+			MC_BR_BarrierCmd_Safety.Execute			:= TRUE;
+			MC_BR_BarrierCmd_Safety.Command			:= mcACPTRAK_BARRIER_CLOSE;
+			
+			IF MC_BR_AsmPowerOn_0.Done AND MC_BR_BarrierCmd_Safety.Done THEN
+				MC_BR_BarrierCmd_Safety.Execute		:= FALSE;
 				MC_BR_AsmPowerOn_0.Execute	:= FALSE;
 				Cnt	:= 0;
 				UserIDSet	:= FALSE;
@@ -217,12 +199,15 @@ PROGRAM _CYCLIC
 				State		:= ERROR;
 			END_IF;
 		
-		// Initialize the SecGetShuttle FUB
+		// Initialize the SecGetShuttle FUB for non virtual shuttles
 		GET_SHUTTLE_INIT:
+			NrOfShuttles	:= 0;
 			StopConveyor	:= TRUE;
+			MC_BR_SecGetShuttle_0.Sector		:= ADR(Sector_1);
 			MC_BR_SecGetShuttle_0.Enable		:= TRUE;
 			MC_BR_SecGetShuttle_0.Next			:= FALSE;
 			MC_BR_SecGetShuttle_0.Mode			:= mcACPTRAK_SEARCH_BACKWARD;
+			MC_BR_SecGetShuttle_0.AdvancedParameters.VirtualSelectionMode	:= mcACPTRAK_GET_SH_VIRT_NONVIRTUAL;
 			State			:= GET_SHUTTLE_WAIT;
 			
 		// Get next shuttle
@@ -242,15 +227,21 @@ PROGRAM _CYCLIC
 					MC_BR_SecGetShuttle_0.Next		:= FALSE;
 					MC_BR_ElasticMoveVel_0.Execute	:= FALSE;
 					NrOfShuttles	:= MC_BR_SecGetShuttle_0.TotalCount;
-					ShIndex	:= -1;
 					
-					IF UserIDSet THEN
+					// If no shuttle is found or the system runs on a real machine, clean the conveyor
+					IF MC_BR_SecGetShuttle_0.TotalCount = 0 AND NOT(SimActive) THEN
+						State	:= CLEAN_CONVEYOR;
+						Cnt		:= 0;
+					// If all UserIDs are set, start the movement
+					ELSIF UserIDSet THEN
 						State	:= START_MOVEMENT;
 						Cnt		:= 0;
+					// Set the UserIDs
 					ELSE
 						State	:= SET_USERID;
 					END_IF;
 				ELSE
+					// If no UserID is set, set the ID
 					MC_BR_SecGetShuttle_0.Next		:= FALSE;
 					IF UserIDSet THEN
 						State	:= GET_SHUTTLE;
@@ -271,11 +262,13 @@ PROGRAM _CYCLIC
 			
 			IF MC_BR_ShSetUserID_0.Done THEN
 				MC_BR_ShSetUserID_0.Execute			:= FALSE;
+				// If SecGetShuttle is still active, get the next shuttle, otherwise move all shuttles
 				IF MC_BR_SecGetShuttle_0.Enable THEN
 					State	:= GET_SHUTTLE;
 				ELSE
 					State	:= START_MOVEMENT;
 					Cnt		:= 0;
+					UserIDSet	:= TRUE;
 				END_IF;
 			ELSIF MC_BR_ShSetUserID_0.Error THEN
 				ErrorInfo	:= 'Error in ShSetUserID';
@@ -283,10 +276,7 @@ PROGRAM _CYCLIC
 			END_IF;
 			
 		// Move all shuttles
-		START_MOVEMENT:
-			Paused			:= FALSE;			
-			EnableStations	:= TRUE;
-			
+		START_MOVEMENT:		
 			MC_BR_ElasticMoveVel_0.Axis			:= ADR(Shuttle[Cnt]);
 			MC_BR_ElasticMoveVel_0.Velocity		:= Velocity;
 			MC_BR_ElasticMoveVel_0.Acceleration	:= Acceleration;
@@ -304,18 +294,108 @@ PROGRAM _CYCLIC
 				Cnt	:= Cnt + 1;
 				
 				// If all shuttles are moved, go to ready
-				IF Cnt >= NrOfShuttles THEN
+				IF Cnt = NrOfShuttles THEN
 					State	:= READY;
+					IF NOT(SimActive) AND NOT(Paused) THEN
+						// If the machine was not paused, undetected shuttles can be found on the conveyor
+						// Go to the cleaning state
+						State	:= CLEAN_CONVEYOR;
+						Cnt		:= 0;
+					END_IF;
+					Paused	:= FALSE;
 				END_IF;
 			ELSIF MC_BR_ElasticMoveVel_0.Error THEN
 				ErrorInfo	:= 'Error in ElasticMoveVel';
 				State		:= ERROR;
 			END_IF;
-		
+			
+		// Clean the conveyor
+		// Start the conveyor when the catching is active for a certain amount of time
+		// This prevents undetected shuttles on the conveyor
+		CLEAN_CONVEYOR:
+			IF MC_BR_SecAddShuttle_Clean.Busy THEN
+				Paused				:= FALSE;
+				StartAxisMovement	:= TRUE;
+				StopConveyor		:= FALSE;
+			END_IF;
+			
+			MC_BR_SecAddShuttle_Clean.Execute	:= TRUE;
+			MC_BR_SecAddShuttle_Clean.Sector	:= ADR(Sector_2);
+			MC_BR_SecAddShuttle_Clean.Position	:= 0.1;
+			MC_BR_SecAddShuttle_Clean.AdvancedParameters.Mode				:= mcACPTRAK_ADD_CATCH;
+			MC_BR_SecAddShuttle_Clean.AdvancedParameters.MoveCmd			:= mcACPTRAK_MOV_CMD_ELASTICMOVEVEL;
+			MC_BR_SecAddShuttle_Clean.AdvancedParameters.Velocity			:= ConveyorVelocity;
+			MC_BR_SecAddShuttle_Clean.AdvancedParameters.Acceleration		:= Acceleration;
+			MC_BR_SecAddShuttle_Clean.AdvancedParameters.Deceleration		:= Deceleration;
+			MC_BR_SecAddShuttle_Clean.AdvancedParameters.Direction			:= mcDIR_POSITIVE;
+			// If no UserID should be recovered take the next from the InitData
+			// The IDs are saved when stopping the system
+			IF UserIDs[0] = '' THEN
+				MC_BR_SecAddShuttle_Clean.AdvancedParameters.UserID			:= ShuttleInitData.ID[NrOfShuttles];
+			ELSE
+				MC_BR_SecAddShuttle_Clean.AdvancedParameters.UserID			:= UserIDs[Cnt];
+			END_IF;
+			
+			// Check if a shuttle is catched and increase the number of shuttles on the system
+			IF EDGEPOS(MC_BR_SecAddShuttle_Clean.Active) THEN
+				MC_BR_SecAddShuttle_Clean.Execute	:= FALSE;
+				
+				IF NrOfShuttles < MAX_SHUTTLES THEN
+					Shuttle[NrOfShuttles]	:= MC_BR_SecAddShuttle_Clean.Axis;
+					NrOfShuttles	:= NrOfShuttles + 1;
+					Cnt	:= Cnt + 1;
+				ELSE
+					ErrorInfo	:= 'Error too many shuttles';
+					State		:= ERROR;
+				END_IF;
+			ELSIF MC_BR_SecAddShuttle_Clean.Error THEN
+				ErrorInfo	:= 'Error in SecAddShuttle Catch';
+				State		:= ERROR;
+			END_IF;
+			
+			// Run the conveyor for 1,5s
+			Timer.IN	:= TRUE;
+			Timer.PT	:= CONVEYOR_CLEAN_TIME; // 1.5 second timeout to detect all shuttles on conveyor
+			
+			IF Timer.Q THEN
+				Timer.IN	:= FALSE;
+				MC_BR_SecAddShuttle_Clean.Execute	:= FALSE;
+				State		:= CLEAN_CONVEYOR_ABORT;
+			END_IF;
+			
+		// Abort the last catch command to free the channel
+		CLEAN_CONVEYOR_ABORT:
+			MC_BR_SecAddShuttle_Clean.Execute	:= TRUE;
+			MC_BR_SecAddShuttle_Clean.AdvancedParameters.Mode				:= mcACPTRAK_ABORT_CATCH;
+			IF MC_BR_SecAddShuttle_Clean.Done THEN
+				MC_BR_SecAddShuttle_Clean.Execute	:= FALSE;
+				// If the system is in errorstop delete all shuttles, otherwise start the process
+				IF AbortCleaningCatch THEN
+					State	:= DELETE_SHUTTLES;
+				ELSE
+					State	:= READY;
+				END_IF;
+				AbortCleaningCatch	:= FALSE;
+			ELSIF MC_BR_SecAddShuttle_Clean.Error THEN
+				ErrorInfo	:= 'Error in SecAddShuttle Catch Abort';
+				State		:= ERROR;
+			END_IF;
+			
 		// All shuttles added and started
-		READY:						
+		READY:	
+			// Open the safety barrier in front of the conveyor
+			IF MC_BR_BarrierCmd_Safety.Command = mcACPTRAK_BARRIER_CLOSE THEN
+				MC_BR_BarrierCmd_Safety.Execute		:= TRUE;
+				MC_BR_BarrierCmd_Safety.Command		:= mcACPTRAK_BARRIER_OPEN;
+			END_IF;
+			
+			IF MC_BR_BarrierCmd_Safety.Done THEN
+				MC_BR_BarrierCmd_Safety.Execute		:= FALSE;
+			END_IF;
+			
 			StartAxisMovement	:= TRUE;
 			StopConveyor		:= FALSE;
+			EnableStations		:= TRUE;
 			
 			IF Halt THEN
 				State			:= HALT_SHUTTLES;
@@ -330,6 +410,7 @@ PROGRAM _CYCLIC
 				MC_BR_AsmStop_0.Execute	:= TRUE;
 			END_IF;
 			
+			MC_BR_AsmStop_0.AdvancedParameters.SegmentGroup	:= '';
 			MC_BR_AsmStop_0.AdvancedParameters.Deceleration	:= Deceleration;
 			IF MC_BR_AsmStop_0.Done THEN
 				MC_BR_AsmStop_0.Execute	:= FALSE;
@@ -342,24 +423,125 @@ PROGRAM _CYCLIC
 				ErrorInfo	:= 'Error in AsmStop';
 				State		:= ERROR;
 			END_IF;
-		
+			
+		// Stop all shuttles on the Trak segments
+		STOP_SHUTTLES:
+			StopConveyor	:= TRUE;
+			MC_BR_AsmStop_0.Execute	:= TRUE;
+			MC_BR_AsmStop_0.AdvancedParameters.Deceleration	:= Deceleration;
+			MC_BR_AsmStop_0.AdvancedParameters.SegmentGroup	:= 'Sector_4';
+			IF MC_BR_AsmStop_0.Done THEN
+				MC_BR_AsmStop_0.Execute	:= FALSE;
+				// If virtual shuttles are on the trak, check the UserIDs to restore at the restart
+				IF MC_BR_AsmReadInfo_0.Valid AND MC_BR_AsmReadInfo_0.AssemblyInfo.ShuttleCount.VirtualShuttles > 0 AND NOT(SimActive) THEN
+					State	:= GET_SHUTTLE_IDS_ON_CONVEYOR_INIT;
+					DeleteAll	:= TRUE;
+				ELSE
+					State	:= DELETE_SHUTTLES;
+				END_IF;
+			ELSIF MC_BR_AsmStop_0.Error THEN
+				ErrorInfo	:= 'Error in AsmStop';
+				State		:= ERROR;
+			END_IF;
+			
+		// Initialize SecGetShuttle for virtual shuttles
+		GET_SHUTTLE_IDS_ON_CONVEYOR_INIT:
+			MC_BR_SecGetShuttle_0.Sector		:= ADR(Sector_1);
+			MC_BR_SecGetShuttle_0.Enable		:= TRUE;
+			MC_BR_SecGetShuttle_0.Next			:= FALSE;
+			MC_BR_SecGetShuttle_0.Mode			:= mcACPTRAK_SEARCH_BACKWARD;
+			MC_BR_SecGetShuttle_0.AdvancedParameters.VirtualSelectionMode	:= mcACPTRAK_GET_SH_VIRT_VIRTUAL;
+			Cnt				:= 0;
+			State			:= GET_SHUTTLE_IDS_ON_CONVEYOR_WAIT;
+			
+		// Get next virtual shuttle
+		GET_SHUTTLE_IDS_ON_CONVEYOR:
+			MC_BR_SecGetShuttle_0.Next			:= TRUE;
+			State			:= GET_SHUTTLE_IDS_ON_CONVEYOR_WAIT;
+			
+		// Get the virtual shuttle
+		GET_SHUTTLE_IDS_ON_CONVEYOR_WAIT:
+			IF MC_BR_SecGetShuttle_0.Valid THEN
+				Shuttle_Conveyor[Cnt]	:= MC_BR_SecGetShuttle_0.Axis;
+				Cnt	:= Cnt + 1;
+				
+				// When all shuttles are found, read the UserIDs
+				IF MC_BR_SecGetShuttle_0.RemainingCount = 0 THEN
+					MC_BR_SecGetShuttle_0.Enable	:= FALSE;
+					MC_BR_SecGetShuttle_0.Next		:= FALSE;
+					NrOfShuttlesOnConveyor	:= MC_BR_SecGetShuttle_0.TotalCount;
+					
+					State	:= GET_SHUTTLE_IDS;
+					Cnt		:= 0;
+				ELSE
+					MC_BR_SecGetShuttle_0.Next		:= FALSE;
+					State	:= GET_SHUTTLE_IDS_ON_CONVEYOR;
+				END_IF;
+			ELSIF MC_BR_SecGetShuttle_0.Error THEN
+				ErrorInfo	:= 'Error in SecGetShuttle Conveyor';
+				State		:= ERROR;
+			END_IF;
+			
+		// Save all UserIDs in a list
+		GET_SHUTTLE_IDS:
+			MC_BR_ShReadInfo_GetIDS.Axis	:= ADR(Shuttle_Conveyor[Cnt]);
+			MC_BR_ShReadInfo_GetIDS.Enable	:= TRUE;
+			
+			IF MC_BR_ShReadInfo_GetIDS.Valid THEN
+				MC_BR_ShReadInfo_GetIDS.Enable	:= FALSE;
+				UserIDs[Cnt]	:= MC_BR_ShReadInfo_GetIDS.ShuttleInfo.AdditionalInfo.UserID;
+				Cnt	:= Cnt + 1;
+				
+				// If the application is stopped, delete all shuttles
+				IF Cnt >= NrOfShuttlesOnConveyor THEN
+					State	:= DELETE_VIRT_SHUTTLES;
+				END_IF;
+				IF DeleteAll THEN
+					DeleteAll:= FALSE;
+					State	:= DELETE_SHUTTLES;
+				END_IF;
+			ELSIF MC_BR_ShReadInfo_GetIDS.Error THEN
+				ErrorInfo	:= 'Error in ShReadInfo GetIDs';
+				State		:= ERROR;
+			END_IF;
+			
 		// Delete all shuttles and open the barrier
 		DELETE_SHUTTLES:
+			UserIDSet		:= FALSE;
 			OpenBarrier		:= TRUE;
 			EnableStations	:= FALSE;
 			CalcShuttle.controlif	:= 0;
 			MC_BR_AsmDeleteShuttle_0.Execute	:= TRUE;
+			MC_BR_AsmDeleteShuttle_0.Command	:= mcACPTRAK_SH_DELETE_ALL;
 			
 			IF MC_BR_AsmDeleteShuttle_0.Done THEN
 				MC_BR_AsmDeleteShuttle_0.Execute:= FALSE;
 				State		:= POWER_OFF;
+				
+				FOR Cnt := 0 TO MAX_SHUTTLES_MIN_ONE DO
+					UserIDs[Cnt]	:= '';
+				END_FOR;
 			ELSIF MC_BR_AsmDeleteShuttle_0.Error THEN
 				ErrorInfo	:= 'Error in AsmDeleteShuttle';
+				State		:= ERROR;
+			END_IF;
+			
+		// Delete only virtual shuttles
+		DELETE_VIRT_SHUTTLES:
+			MC_BR_AsmDeleteShuttle_0.Execute	:= TRUE;
+			MC_BR_AsmDeleteShuttle_0.Command	:= mcACPTRAK_SH_DELETE_VIRTUAL;
+			
+			IF MC_BR_AsmDeleteShuttle_0.Done THEN
+				MC_BR_AsmDeleteShuttle_0.Execute:= FALSE;
+				State		:= INIT;
+			ELSIF MC_BR_AsmDeleteShuttle_0.Error THEN
+				ErrorInfo	:= 'Error in AsmDeleteShuttle Virtual';
 				State		:= ERROR;
 			END_IF;
 		
 		// Power off the assembly
 		POWER_OFF:
+			StateAxis	:= AXIS_POWER_OFF;
 			MC_BR_AsmPowerOff_0.Execute			:= TRUE;
 			
 			IF MC_BR_AsmPowerOff_0.Done THEN
@@ -372,7 +554,6 @@ PROGRAM _CYCLIC
 		
 		// Error state, reset all variables
 		ERROR:
-			Paused			:= TRUE;
 			EnableStations	:= FALSE;
 			Start			:= FALSE;
 			Stop			:= FALSE;
@@ -383,11 +564,16 @@ PROGRAM _CYCLIC
 			MC_BR_AsmDeleteShuttle_0.Execute	:= FALSE;
 			MC_BR_AsmReset_0.Execute			:= FALSE;
 			MC_BR_AsmReadInfo_0.Enable			:= FALSE;
+			MC_BR_AsmStop_0.Execute				:= FALSE;
 	
 			MC_BR_SecAddShuttle_Main.Execute	:= FALSE;
 			MC_BR_SecAddShuttle_1.Execute		:= FALSE;
 			MC_BR_SecGetShuttle_0.Enable		:= FALSE;
 			MC_BR_SecReadInfo_Seg08.Enable		:= FALSE;
+			
+			MC_BR_SecAddShuttle_Clean.Execute	:= FALSE;
+			MC_BR_ShReadInfo_GetIDS.Enable		:= FALSE;
+			Timer.IN	:= FALSE;
 	
 			MC_BR_ElasticMoveVel_0.Execute		:= FALSE;
 			
@@ -398,7 +584,7 @@ PROGRAM _CYCLIC
 			StopConveyor	:= TRUE;
 	
 			// Only set the entry state to error to abort the catch mode
-			EntryState		:= ENTRY_ERROR;
+			EntryState		:= ENTRY_ERROR;		
 		
 	END_CASE;
 	
@@ -429,7 +615,7 @@ PROGRAM _CYCLIC
 			
 		// Start the cyclic velocity command when no shuttle is on the segment behind the conveyor to avoid a crash
 		AXIS_READY:
-			IF StartAxisMovement AND MC_BR_SecReadInfo_Seg08.SectorInfo.ShuttleCount.Count = 0 THEN
+			IF StartAxisMovement AND (MC_BR_SecReadInfo_Seg08.SectorInfo.ShuttleCount.Count = 0 OR MC_BR_SecReadInfo_Seg08.SectorInfo.ShuttleCount.VirtualShuttles > 0) THEN
 				MpAxisCyclicSet_0.MoveCyclicVelocity:= TRUE;
 			END_IF;
 			IF MC_BR_SegReadInfo_Entry.SegmentInfo.PLCopenState = mcACPTRAK_ERRORSTOP OR StopConveyor THEN
@@ -455,9 +641,10 @@ PROGRAM _CYCLIC
 	END_CASE;
 	
 	// Check for error in MpAxisBasic
-	IF EDGEPOS(MpAxisBasic_0.Error) THEN
+	IF MpAxisBasic_0.Error THEN
 		ErrorInfo	:= 'Error in MpAxisBasic';
 		StateAxis	:= AXIS_ERROR;
+		State		:= ERROR;
 	ELSE
 		MpAxisBasic_0.ErrorReset	:= FALSE;
 	END_IF;
@@ -508,11 +695,26 @@ PROGRAM _CYCLIC
 				MC_BR_AsmReset_0.Execute	:= FALSE;
 				State		:= INIT;
 				OpenBarrier	:= TRUE;
+
+				// If the catch is active for cleaning the conveyor, abort the catch
+				IF MC_BR_SecAddShuttle_Clean.Active THEN
+					State	:= CLEAN_CONVEYOR_ABORT;
+					AbortCleaningCatch	:= TRUE;
+				END_IF;
+				
+				// No shuttle will be catched after poweron the conveyor
+				// Therefore all shuttles will be deleted in the simulation to restart the application
+				IF SimActive THEN
+					State	:= DELETE_SHUTTLES;
+				END_IF;
 			ELSIF MC_BR_AsmReset_0.Error THEN
+				MC_BR_AsmReset_0.Execute	:= FALSE;
 				ErrorInfo	:= 'Error in AsmReset';
 				State		:= ERROR;
 			END_IF;
-		ELSIF StateAxis = AXIS_ERROR THEN
+		END_IF;
+		
+		IF StateAxis = AXIS_ERROR THEN
 			StateAxis	:= AXIS_POWER_OFF;
 			MpAxisBasic_0.ErrorReset	:= TRUE;
 			MpAxisCyclicSet_0.ErrorReset:= TRUE;
@@ -562,6 +764,7 @@ PROGRAM _CYCLIC
 	MC_BR_SecAddShuttle_Main();
 	MC_BR_SecAddShuttle_0();
 	MC_BR_SecAddShuttle_1();
+	MC_BR_SecAddShuttle_Clean();
 	MC_BR_SecGetShuttle_0();
 	MC_BR_SecReadInfo_Seg08();
 	MC_BR_SecReadInfo_CheckFree();
@@ -570,6 +773,12 @@ PROGRAM _CYCLIC
 	
 	MC_BR_ElasticMoveVel_0();
 	
+	MC_BR_BarrierCmd_Safety();
+	
+	Timer();
+	
+	MC_BR_ShReadInfo_GetIDS();
+	
 	MpAxisBasic_0();
 	
 	MpAxisCyclicSet_0.CyclicVelocity	:= ConveyorVelocity;
@@ -577,7 +786,7 @@ PROGRAM _CYCLIC
 	
 	FOR Index := 0 TO MAX_SHUTTLES_MIN_ONE DO
 		// Read shuttle information if available
-		IF Shuttle[Index].controlif <> 0 AND State > GET_SHUTTLE_WAIT AND State < DELETE_SHUTTLES AND Index < NrOfShuttles THEN
+		IF Shuttle[Index].controlif <> 0 AND State > SET_USERID AND State < DELETE_SHUTTLES AND Index < NrOfShuttles THEN
 			MC_BR_ShReadInfo_Main[Index].Axis	:= ADR(Shuttle[Index]);
 			MC_BR_ShReadInfo_Main[Index].Enable	:= TRUE;
 		ELSE
@@ -607,8 +816,20 @@ PROGRAM _CYCLIC
 			State		:= ERROR;			
 		END_IF;
 	END_FOR;
+
+	// Track state changes for debugging
+	IF State <> LastState THEN
+		// Shift history
+		FOR Index := 9 TO 1 BY -1 DO
+			StateHistory[Index] := StateHistory[Index-1];
+		END_FOR;
+		StateHistory[0] := LastState;
+		LastState := State;
+	END_IF;
 	
 	AutomaticVelocityAdjNotActive	:= NOT(AutomaticVelocityAdjustment);
+	
+	MachineRunning	:= State = INIT;
 	 
 END_PROGRAM
 

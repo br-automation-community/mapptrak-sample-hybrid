@@ -27,12 +27,12 @@ ACTION CalcAutomaticVelocity:
 	
 	// Get the velocity if the shuttle is real and on the first segment after the conveyor
 	IF MC_BR_ShReadInfo_Calc.Valid AND MC_BR_ShReadInfo_Calc.ShuttleInfo.CurrentValues.SegmentPosition.Segment.controlif = Seg_08.controlif AND 
-		MC_BR_ShReadInfo_Calc.ShuttleInfo.CurrentValues.SegmentPosition.Position < 0.2 AND NOT(MC_BR_ShReadInfo_Calc.ShuttleInfo.AdditionalInfo.Virtual) AND 
+		MC_BR_ShReadInfo_Calc.ShuttleInfo.CurrentValues.SegmentPosition.Position < CLEAR_POSITION_THRESHOLD AND NOT(MC_BR_ShReadInfo_Calc.ShuttleInfo.AdditionalInfo.Virtual) AND 
 		MC_BR_ShReadInfo_Calc.ShuttleInfo.CurrentValues.Velocity <> 0 THEN
 		ConveyorVelocity	:= MC_BR_ShReadInfo_Calc.ShuttleInfo.CurrentValues.Velocity;
 	// If the shuttle left the segment, but no other shuttle is available, set the maximum speed
 	ELSIF MC_BR_ShReadInfo_Calc.Valid AND NOT(MC_BR_ShReadInfo_Calc.ShuttleInfo.AdditionalInfo.Virtual) THEN
-		ConveyorVelocity	:= 2.0;
+		ConveyorVelocity	:= 2.0; // Fallback to maximum speed when no shuttle detected
 	END_IF;
 	
 END_ACTION

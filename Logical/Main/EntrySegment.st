@@ -18,6 +18,10 @@ ACTION EntrySegment:
 			IF EnableStations AND NOT(Paused) THEN
 				EntryState	:= ENTRY_CHECK_TRIGGER;
 			END_IF;
+			
+			IF MC_BR_SecAddShuttle_0.Active OR MC_BR_SecAddShuttle_1.Active THEN
+				EntryState	:= ENTRY_ABORT_CATCH;
+			END_IF;
 		
 		// Check for shuttle passed the trigger
 		ENTRY_CHECK_TRIGGER:
@@ -54,14 +58,13 @@ ACTION EntrySegment:
 			
 			IF MC_BR_ShReadInfo_Entry.Valid THEN
 				VirtShID	:= MC_BR_ShReadInfo_Entry.ShuttleInfo.AdditionalInfo.ID;
-				ShVelocity	:= MC_BR_ShReadInfo_Entry.ShuttleInfo.CurrentValues.Velocity;
-				EntryState	:= ENTRY_CATCH_SHUTTLE;
+				EntryState	:= ENTRY_CATCH_SHUTTLE; // Virtual ID retrieved, ready to catch real shuttle
 				
 				Message		:= 'Shuttle "';
 				brsstrcat(ADR(Message),ADR(MC_BR_ShReadInfo_Entry.ShuttleInfo.AdditionalInfo.UserID));
 				brsstrcat(ADR(Message),ADR('" left the conveyor and entered the trak'));
-				AddMessage	:= TRUE;
-				AddImage	:= 0;
+				AddMessage	:= TRUE;  // Queue status message for visualization
+				AddImage	:= 0;       // Icon index 0: Shuttle entering trak
 			ELSIF MC_BR_ShReadInfo_Entry.Error THEN
 				ErrorInfo	:= 'Error in ShReadInfo Entry';
 				State		:= ERROR;
@@ -73,8 +76,8 @@ ACTION EntrySegment:
 		ENTRY_CATCH_SHUTTLE:
 			IF NOT(MC_BR_SecAddShuttle_0.Execute) THEN
 				// Set velocity if the simulation is active
-				// If the simulation is active, wiat until the shuttle reached the position
-				IF SimActive AND MC_BR_ShReadInfo_Entry.ShuttleInfo.CurrentValues.SegmentPosition.Position >= 0.0 AND MC_BR_ShReadInfo_Entry.ShuttleInfo.CurrentValues.SegmentPosition.Segment.controlif = Seg_08.controlif (*AND MC_BR_SecReadInfo_SimSector.SectorInfo.ShuttleCount.Count = 0 AND MC_BR_SecReadInfo_SimSector.Valid*) THEN
+				// If the simulation is active, wait until the shuttle reached the position before catching the shuttle
+				IF SimActive AND MC_BR_ShReadInfo_Entry.ShuttleInfo.CurrentValues.SegmentPosition.Position >= ENTRY_POSITION_THRESHOLD AND MC_BR_ShReadInfo_Entry.ShuttleInfo.CurrentValues.SegmentPosition.Segment.controlif = Seg_08.controlif (*AND MC_BR_SecReadInfo_SimSector.SectorInfo.ShuttleCount.Count = 0 AND MC_BR_SecReadInfo_SimSector.Valid*) THEN
 					MC_BR_SecAddShuttle_0.Velocity	:= ConveyorVelocity;
 					MC_BR_SecAddShuttle_0.Execute	:= TRUE;
 					EntryState	:= ENTRY_CHECK_TRIGGER;
@@ -84,9 +87,9 @@ ACTION EntrySegment:
 				END_IF;
 				MC_BR_SecAddShuttle_0.Sector	:= ADR(Sector_2);
 				MC_BR_SecAddShuttle_0.Position	:= 0.0;
-				MC_BR_SecAddShuttle_0.AdvancedParameters.Mode				:= mcACPTRAK_ADD_CATCH;
-				MC_BR_SecAddShuttle_0.AdvancedParameters.VirtualShuttleID	:= VirtShID;
-				MC_BR_SecAddShuttle_0.AdvancedParameters.MoveCmd			:= mcACPTRAK_MOV_CMD_ELASTICMOVEVEL;
+				MC_BR_SecAddShuttle_0.AdvancedParameters.Mode				:= mcACPTRAK_ADD_CATCH; // Catch mode: convert virtual to real shuttle
+				MC_BR_SecAddShuttle_0.AdvancedParameters.VirtualShuttleID	:= VirtShID; // Link to virtual shuttle on conveyor
+				MC_BR_SecAddShuttle_0.AdvancedParameters.MoveCmd			:= mcACPTRAK_MOV_CMD_ELASTICMOVEVEL; // Continue with elastic movement
 				MC_BR_SecAddShuttle_0.AdvancedParameters.Velocity			:= ConveyorVelocity;
 				MC_BR_SecAddShuttle_0.AdvancedParameters.Acceleration		:= Acceleration;
 				MC_BR_SecAddShuttle_0.AdvancedParameters.Deceleration		:= Deceleration;
@@ -95,7 +98,7 @@ ACTION EntrySegment:
 			ELSIF NOT(MC_BR_SecAddShuttle_1.Execute) THEN				
 				// Set velocity if the simulation is active
 				// If the simulation is active, wiat until the shuttle reached the position
-				IF SimActive AND MC_BR_ShReadInfo_Entry.ShuttleInfo.CurrentValues.SegmentPosition.Position >= 0.0 AND MC_BR_ShReadInfo_Entry.ShuttleInfo.CurrentValues.SegmentPosition.Segment.controlif = Seg_08.controlif(*AND MC_BR_SecReadInfo_SimSector.SectorInfo.ShuttleCount.Count = 0 AND MC_BR_SecReadInfo_SimSector.Valid*) THEN
+				IF SimActive AND MC_BR_ShReadInfo_Entry.ShuttleInfo.CurrentValues.SegmentPosition.Position >= ENTRY_POSITION_THRESHOLD AND MC_BR_ShReadInfo_Entry.ShuttleInfo.CurrentValues.SegmentPosition.Segment.controlif = Seg_08.controlif(*AND MC_BR_SecReadInfo_SimSector.SectorInfo.ShuttleCount.Count = 0 AND MC_BR_SecReadInfo_SimSector.Valid*) THEN
 					MC_BR_SecAddShuttle_1.Velocity	:= ConveyorVelocity;
 					MC_BR_SecAddShuttle_1.Execute	:= TRUE;
 					EntryState	:= ENTRY_CHECK_TRIGGER;
@@ -128,7 +131,10 @@ ACTION EntrySegment:
 			MC_BR_SecAddShuttle_1.Execute			:= FALSE;
 			MC_BR_SecReadInfo_SimSector.Enable		:= FALSE;
 			
-			EntryState	:= ENTRY_ABORT_CATCH;
+			EntryState	:= ENTRY_INIT;
+			IF MC_BR_SecAddShuttle_0.Active OR MC_BR_SecAddShuttle_1.Active THEN
+				EntryState	:= ENTRY_ABORT_CATCH;
+			END_IF;
 			
 		// Abort the catch mode
 		ENTRY_ABORT_CATCH:

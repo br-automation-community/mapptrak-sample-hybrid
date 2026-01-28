@@ -90,5 +90,9 @@
 <Source xsi:type="opcUa" refId="::Main:ConfirmShuttleAdded" attribute="value" />
 <Target xsi:type="brease" contentRefId="MainContent" widgetRefId="PushButton_AddShuttle_Confirm" attribute="value" />
 </Binding>
+<Binding mode="twoWay">
+<Source xsi:type="opcUa" refId="::Main:MachineRunning" attribute="value" />
+<Target xsi:type="brease" contentRefId="MainContent" widgetRefId="NumericInput_NrOfShuttles" attribute="enable" />
+</Binding>
 </Bindings>
 </BindingsSet>
