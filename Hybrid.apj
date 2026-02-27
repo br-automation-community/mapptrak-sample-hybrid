@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<?AutomationStudio Version="6.3.1.32" WorkingVersion="6.1"?>
+<?AutomationStudio Version="6.3.4.31" WorkingVersion="6.1"?>
 <Project Description="Oval trak demo with one conveyor segment" Version="1.0.0" Edition="Standard" EditionComment="Standard" xmlns="http://br-automation.co.at/AS/Project">
   <Communication />
   <ANSIC DefaultIncludes="true" />
@@ -8,7 +8,7 @@
   <Variables DefaultInitValue="0" DefaultRetain="false" DefaultVolatile="true" />
   <TechnologyPackages>
     <mappCockpit Version="6.2.1" />
-    <mappMotion McAcpDrv="6.5.0" McAcpSim="6.5.0" McAcpSys="6.5.0" McDriveLog="6.5.0" McProfGen="6.5.0" Version="6.5.0" />
+    <mappMotion McAcpDrv="6.7.0" McAcpSim="6.7.0" McAcpSys="6.7.0" McDriveLog="6.7.0" McProfGen="6.7.0" Version="6.7.0" />
     <mappServices Version="6.2.0" />
     <mappView Version="6.2.0" />
     <OpcUaCs Version="6.0.0" />
